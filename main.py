@@ -17,9 +17,12 @@
 
 from mydb.models import session, Satellite, SatelliteData, Region
 # from sqlalchemy import select
-from mydb.session import get_sats, get_reg, get_data, delete_sat_tb
+from mydb.session import get_sats, get_reg, get_data, get_sat_ids, get_data_ids, get_reg_ids
+from mydb.session import delete_sat, delete_region, delete_data
 
 on_loop = True
+
+# mark: Display Functions
 
 def sat_tb_display():
     sats = get_sats()
@@ -78,12 +81,75 @@ def display_table():
     else:
         region_tb_display()
 
-
-    pass
 def create_table():
     pass
 def update_table():
     pass
+
+# mark: Delete Functions
+def handle_sat_delete():
+    sat_tb_display()
+    sat_ids = get_sat_ids()
+
+    print("")
+    print(f"Choose which satellite to delete according to its Id: {sat_ids}")
+    print("")
+
+    while True:
+        user = int(input("Choose Id: "))
+        if user in sat_ids:
+            break
+        else:
+            print(f"No satellite with Id of {user}")
+    
+    delete_sat(user)
+    print("")
+    print("###")
+    print(f"Satellite of Id {user} has been deleted successfully!!")
+    print("###")
+
+def handle_region_delete():
+    region_tb_display()
+    reg_ids = get_reg_ids()
+
+    print("")
+    print(f"Choose which region to delete according to its Id: {reg_ids}")
+    print("")
+
+    while True:
+        user = int(input("Choose Id: "))
+        if user in reg_ids:
+            break
+        else:
+            print(f"No Region with Id of {user}")
+    
+    delete_region(user)
+    print("")
+    print("###")
+    print(f"Region of Id {user} has been deleted successfully!!")
+    print("###")
+
+def handle_data_delete():
+    satdata_tb_display()
+    data_ids = get_data_ids()
+
+    print("")
+    print(f"Choose which Data Type to delete according to its Id: {data_ids}")
+    print("")
+
+    while True:
+        user = int(input("Choose Id: "))
+        if user in data_ids:
+            break
+        else:
+            print(f"No Data Type with Id of {user}")
+    
+    delete_data(user)
+    print("")
+    print("###")
+    print(f"Data Type of Id {user} has been deleted successfully!!")
+    print("###")
+
 def delete_table():
     print("")
     print("Choose Table to Delete")
@@ -101,11 +167,11 @@ def delete_table():
             print(f"{user} is Invalid Input. Choose in (1, 2, 3)")
     
     if user == "1":
-        delete_sat_tb()
-    # elif user == "2":
-    #     satdata_tb_display()
-    # else:
-    #     region_tb_display()
+        handle_sat_delete()
+    elif user == "2":
+        handle_data_delete()
+    else:
+        handle_region_delete()
 
 def exit_menu():
     global on_loop
@@ -118,10 +184,10 @@ def menu():
     print("")
     print("Choose your Options")
     print("-------------------")
-    print("1. Display table")
-    print("2. Create table")
-    print("3. Update table")
-    print("4. Delete table")
+    print("1. Display tables")
+    print("2. Create new table value")
+    print("3. Update table value")
+    print("4. Delete table value")
     print("5. Exit")
     print("")
     print("##################################")
