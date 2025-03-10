@@ -17,3 +17,6 @@ class Region(Base):
 engine = create_engine('sqlite:///monitoring.db')
 Base.metadata.create_all(engine)
 
+# note: Create session instance
+Session = sessionmaker(bind=engine)
+session = Session()
