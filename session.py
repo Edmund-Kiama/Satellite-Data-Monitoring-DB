@@ -5,14 +5,12 @@ from datetime import date
 # CREATE
 # sat
 landsat = Satellite(
-    id = 1,
     name = "Landsat-9",
     orbit_type = "LEO",
     status = "active",
     description = "NASA's Earth observation satellite"
 )
 geos = Satellite(
-    id = 2,
     name = "GOES-16",
     orbit_type = "GEO",
     status = "active",
@@ -113,7 +111,23 @@ geos_data = [data for data in data_objs if data.sat_id == 2]
 # sat1 = session.scalars(stmt).first()
 # sat1.name = "Not Landsat-9"
 # session.commit()
-# update region
-# update data
 
-#delete
+# info: update region
+# stmt = select(Region).where(Region.id == 1 )
+# region1 = session.scalars(stmt).first()
+# region1.name = "Not Amazon"
+# session.commit()
+
+# info: update data
+# stmt = select(SatelliteData).where(SatelliteData.id == 1 )
+# data1 = session.scalars(stmt).first()
+# data1.name = "Not Surface Temperature"
+# session.commit()
+
+# Note: DELETE
+# info: delete satellite
+
+# info: delete region
+
+# info: delete data
+
