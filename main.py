@@ -241,27 +241,59 @@ def create_table():
 # mark: Update Function   
 
 def handle_sat_edit():
+    
     print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     print("")
     print("You chose to edit in Satellite table")
     print("")
+    sat_tb_display()
     print("Which satellite do you wanna edit?")
+    print("")
     
     while True:
         try:
             sat_id = int(input("Choose by Id: "))
+            print("")
             break
         except ValueError:
-            print("")
             print(f"{sat_id} is not an Integer. Try again")
             print("")
 
     print("Satellite Columns = ['name','orbit_type','status','description']")
     print("")
-    variable = input("Which of its column is to be edited?")
-    print("")
-    new_value = input("What's the new value: ")
-    print("")
+    while True:
+        variable = input("Which of its column is to be edited?")
+        print("")
+        if variable in ['name','orbit_type','status','description']:
+            break
+        else:
+            print("Please pick among ['name','orbit_type','status','description']")
+            print("")
+    while True:
+        try:
+            if variable == "orbit_type" :
+                new_value = input("What's the new value: ")
+                print("")
+                if new_value in ["LEO", "MEO", "GEO"]:
+                    break
+                else:
+                    print(f'{new_value} is not in ["LEO", "MEO", "GEO"]')
+                    print("")
+            elif variable == "status":
+                new_value = input("What's the new value: ")
+                print("")
+                if new_value in ["active", "inactive"]:
+                    break
+                else:
+                    print(f'{new_value} is not in ["active", "inactive"]')
+                    print("")
+            elif (variable == "name" or variable == "description") :
+                new_value = input("What's the new value: ")
+                print("")
+                break
+        except ValueError:
+            print("Try again")
+            print("")
 
     if sat_id and variable and new_value:
         update_sat(sat_id, variable, new_value)
@@ -273,12 +305,113 @@ def handle_sat_edit():
         print("")
 
 
-def handle_reg_edit():
-    pass
+def handle_region_edit():
+    
+    print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+    print("")
+    print("You chose to edit in Region table")
+    print("")
+    region_tb_display()
+    print("Which region do you wanna edit? ")
+    print("")
+    
+    while True:
+        try:
+            reg_id = int(input("Choose by Id: "))
+            print("")
+            break
+        except ValueError:
+            print(f"{reg_id} is not an Integer. Try again")
+            print("")
+
+    print("Region Columns = ['sat_id', 'name','latitude','longitude']")
+    print("")
+    while True:
+        variable = input("Which of its column is to be edited? ")
+        print("")
+        if variable in ['sat_id', 'name','latitude','longitude']:
+            break
+        else:
+            print("Please pick among ['sat_id', 'name','latitude','longitude']")
+            print("")
+    while True:
+        try:
+            if variable in ["latitude", "longitude"]:
+                new_value = float(input("What's the new value: "))
+                print("")
+                break
+            elif variable == "sat_id":
+                new_value = int(input("What's the new value: "))
+                print("")
+                break
+            elif variable == "name" :
+                new_value = input("What's the new value: ")
+                print("")   
+                break
+        except ValueError: 
+            print("Try again!")
+            print("")
+
+    if reg_id and variable and new_value:
+        update_region(reg_id, variable, new_value)
+        print("---------------------------------------------")
+        print("          Update is successful!")
+        print("---------------------------------------------")
+        print("")
+        print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
 
 
-def handle_data_update():
-    pass
+def handle_data_edit():
+    
+    print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+    print("")
+    print("You chose to edit in Satellite Data table")
+    print("")
+    satdata_tb_display()
+    print("Which data do you wanna edit?")
+    print("")
+    
+    while True:
+        try:
+            data_id = int(input("Choose by Id: "))
+            print("")
+            break
+        except ValueError:
+            print(f"{data_id} is not an Integer. Try again")
+            print("")
+
+    print("Satellite Data Columns = ['sat_id', 'data_type', 'data_value', 'date_recorded']")
+    print("")
+    while True:
+        variable = input("Which of its column is to be edited? ")
+        print("")
+        if variable in ['sat_id', 'data_type', 'data_value', 'date_recorded']:
+                break
+        else:
+            print("Please pick among  ['sat_id', 'data_type', 'data_value', 'date_recorded']")
+            print("")
+    while True:
+        try:
+            if variable in ["data_type", "data_value", "date_recorded"]:
+                new_value = input("What's the new value: ")
+                print("")
+                break
+            elif variable == "sat_id":
+                new_value = int(input("What's the new value: "))
+                print("")
+                break
+        except ValueError:
+            print("Try again !")
+            print("")
+
+    if data_id and variable and new_value:
+        update_region(data_id, variable, new_value)
+        print("---------------------------------------------")
+        print("          Update is successful!")
+        print("---------------------------------------------")
+        print("")
+        print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+
 
 
 def update_table():
