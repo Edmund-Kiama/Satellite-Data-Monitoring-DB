@@ -1,6 +1,6 @@
-from sqlalchemy.ext.declarative import declarative_base #type: ignore
-from sqlalchemy.orm import relationship, sessionmaker #type: ignore
-from sqlalchemy import Column, String, Integer, ForeignKey, Float, create_engine, Date #type: ignore
+from sqlalchemy.ext.declarative import declarative_base 
+from sqlalchemy.orm import relationship, sessionmaker 
+from sqlalchemy import Column, String, Integer, ForeignKey, Float, create_engine, Date 
 from datetime import date
 
 Base = declarative_base()

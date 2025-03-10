@@ -6,6 +6,8 @@ from mydb.session import update_data, update_region, update_sat
 
 on_loop = True
 
+# fix: find object by attribute
+
 
 # mark: Display Functions
 
@@ -405,7 +407,7 @@ def handle_data_edit():
             print("")
 
     if data_id and variable and new_value:
-        update_region(data_id, variable, new_value)
+        update_data(data_id, variable, new_value)
         print("---------------------------------------------")
         print("          Update is successful!")
         print("---------------------------------------------")
