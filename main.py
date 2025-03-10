@@ -1,28 +1,9 @@
-# the app should be able to
-# - have a menu for creating, display, update, delete tables
-# - for those CRUD menus, they ask for the tree tables
 
-# for creating new values for tables - ask the user for the values
-
-# display just displays the tables, and find by id
-
-# for updating, 
-#     - the user picks which table and which value to change,
-#     - then prompt user for value
-#     - then update the value to db
-
-# for deleting
-#     - the user picks which table and which value to delete
-#     - update the db
-
-from mydb.models import session, Satellite, SatelliteData, Region
-# from sqlalchemy import select
 from mydb.session import get_sats, get_reg, get_data, get_sat_ids, get_data_ids, get_reg_ids
 from mydb.session import delete_sat, delete_region, delete_data
 from mydb.session import add_sat, add_region, add_data
-
-
 on_loop = True
+
 
 # mark: Display Functions
 
@@ -37,6 +18,7 @@ def sat_tb_display():
         print(f"| {sat.id:<3}   |   {sat.name:<10}  |   {sat.orbit_type:<5}    |   {sat.status:<8}  |   {sat.description:<20}")
     print("------------------------------------------------------------------------------------------")
 
+
 def satdata_tb_display():
     data = get_data()
     print("")
@@ -48,6 +30,7 @@ def satdata_tb_display():
         print(f"| {dat.id:<3}   |   {dat.sat_id:<3}  |   {dat.data_type:<20}    |   {dat.data_value:<10}  |   {dat.date_recorded:<10}")
     print("------------------------------------------------------------------------------")
     
+
 def region_tb_display():
     regions = get_reg()
     print("")
@@ -83,6 +66,8 @@ def display_table():
     else:
         region_tb_display()
 
+
+
 #mark: Create function
 
 def handle_sat_create():
@@ -116,6 +101,7 @@ def handle_sat_create():
         print("         #######")
         print("")
 
+
 def handle_satdata_create():
     print("")
     print("You chose SatelliteData table")
@@ -143,8 +129,50 @@ def handle_satdata_create():
         print("--------------------------------------------")
         print("")
 
+
 def handle_region_create():
-    pass
+    print("")
+    print("You chose Region table")
+    print("Values required are: sat_id, name, latitude, longitude")
+    print("")
+
+    while True:
+        try:
+            sat_idx = int(input("Satellite Id for the region: "))
+            break
+        except ValueError:
+            print("")
+            print("Invalid input! Please enter an integer.")  
+            print("")
+
+    reg_name = input("Name of the region: ")
+
+    while True:
+        try:
+            reg_latitude = float(input("Latitude of the region: "))
+            break
+        except ValueError:
+            print("")
+            print("Invalid input! Please enter a Float.")  
+            print("")
+    
+    while True:
+        try:
+            reg_longitude = float(input("Longitude of the region: "))
+            break
+        except ValueError:
+            print("")
+            print("Invalid input! Please enter a Float.")  
+            print("")
+
+    if sat_idx and reg_name and reg_latitude and reg_longitude:
+        add_region(sat_idx, reg_name, reg_latitude, reg_longitude)
+        print("")
+        print("-------------------------------------------")
+        print("New Satellite Data Instance has been added.")
+        print("--------------------------------------------")
+        print("")
+
 
 def create_table():
     print("")
@@ -168,9 +196,15 @@ def create_table():
         handle_satdata_create()
     else:
         handle_region_create()
-    
+
+
+
+# mark: Update Function   
+
 def update_table():
     pass
+
+
 
 # mark: Delete Functions
 def handle_sat_delete():
@@ -194,6 +228,7 @@ def handle_sat_delete():
     print(f"Satellite of Id {user} has been deleted successfully!!")
     print("###")
 
+
 def handle_region_delete():
     region_tb_display()
     reg_ids = get_reg_ids()
@@ -215,6 +250,7 @@ def handle_region_delete():
     print(f"Region of Id {user} has been deleted successfully!!")
     print("###")
 
+
 def handle_data_delete():
     satdata_tb_display()
     data_ids = get_data_ids()
@@ -235,6 +271,7 @@ def handle_data_delete():
     print("###")
     print(f"Data Type of Id {user} has been deleted successfully!!")
     print("###")
+
 
 def delete_table():
     print("")
@@ -259,9 +296,11 @@ def delete_table():
     else:
         handle_region_delete()
 
+
 def exit_menu():
     global on_loop
     on_loop = False
+
 
 def menu():
     print("")
@@ -287,6 +326,8 @@ def menu():
 
     return user
 
+
+
 def main():
     while on_loop:
         user = menu()
@@ -300,8 +341,8 @@ def main():
             delete_table()
         else:
             exit_menu()
-         
-    pass
+
+
 
 if __name__ == "__main__":
     main()
