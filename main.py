@@ -19,6 +19,8 @@ from mydb.models import session, Satellite, SatelliteData, Region
 # from sqlalchemy import select
 from mydb.session import get_sats, get_reg, get_data, get_sat_ids, get_data_ids, get_reg_ids
 from mydb.session import delete_sat, delete_region, delete_data
+from mydb.session import add_sat, add_region, add_data
+
 
 on_loop = True
 
@@ -28,12 +30,12 @@ def sat_tb_display():
     sats = get_sats()
     print("")
     print("                             Satellite Table")
-    print("-----------------------------------------------------------------------------------------")
-    print("| Id    |   Name        | Orbit Type |   Status   |   Description                       ")
-    print("-----------------------------------------------------------------------------------------")
+    print("------------------------------------------------------------------------------------------")
+    print("| Id    |   Name        | Orbit Type |   Status    |   Description                       ")
+    print("------------------------------------------------------------------------------------------")
     for sat in sats:
-        print(f"| {sat.id:<3}   |   {sat.name:<10}  |   {sat.orbit_type:<5}    |   {sat.status:<7}  |   {sat.description:<20}")
-    print("-----------------------------------------------------------------------------------------")
+        print(f"| {sat.id:<3}   |   {sat.name:<10}  |   {sat.orbit_type:<5}    |   {sat.status:<8}  |   {sat.description:<20}")
+    print("------------------------------------------------------------------------------------------")
 
 def satdata_tb_display():
     data = get_data()
@@ -81,8 +83,92 @@ def display_table():
     else:
         region_tb_display()
 
-def create_table():
+#mark: Create function
+
+def handle_sat_create():
+    print("")
+    print("You chose Satellite table")
+    print("Values required are: name, orbit_type,status.description")
+    print("")
+
+    name = input("Satellite's name: ")
+    while True:
+        orbit_type = input("Satellite's orbit type ['MEO', 'LEO', 'GEO']: ")
+        if orbit_type in ["MEO", "LEO", "GEO"]:
+            break
+        else: 
+            raise ValueError("Status can only be 'MEO' or 'LEO' OR 'GEO' .")
+
+    while True:
+        status = input("Satellite's status ['active', 'inactive']: ")
+        if status in ["active", "inactive"]:
+            break
+        else: 
+            raise ValueError("Status can only be 'active' or 'inactive' .")
+                
+    description = input("Satellite's description: ")
+
+    if name and orbit_type and status and description:
+        add_sat(name, orbit_type, status, description)
+        print("")
+        print("         #######")
+        print("New Satellite Instance has been added.")
+        print("         #######")
+        print("")
+
+def handle_satdata_create():
+    print("")
+    print("You chose SatelliteData table")
+    print("Values required are: name, orbit_type,status.description")
+    print("")
+
+    while True:
+        try:
+            sat_idx = int(input("Satellite Id that took the data recording: "))
+            break
+        except ValueError:
+            print("")
+            print("Invalid input! Please enter an integer.")  
+            print("")
+
+    type_data = input("Type of Data: ")
+    value_data = input("Value of Data: ")
+    date = input("Date of recording Data [YYYY-MM-DD]: ")
+
+    if sat_idx and type_data and value_data and date:
+        add_data(sat_idx, type_data, value_data, date)
+        print("")
+        print("-------------------------------------------")
+        print("New Satellite Data Instance has been added.")
+        print("--------------------------------------------")
+        print("")
+
+def handle_region_create():
     pass
+
+def create_table():
+    print("")
+    print("Choose from which table to create instances for")
+    print("-----------------------")
+    print("1. Satellites table")
+    print("2. Satellites Data table")
+    print("3. Regions table")
+    print("")
+
+    while True:
+        user = input("Which table do you wanna create instances from: ")
+        if user in ["1", "2", "3"]:
+            break
+        else:
+            print(f"{user} is Invalid Input. Choose in (1, 2, 3)")
+    
+    if user == "1":
+        handle_sat_create()
+    elif user == "2":
+        handle_satdata_create()
+    else:
+        handle_region_create()
+    
 def update_table():
     pass
 
