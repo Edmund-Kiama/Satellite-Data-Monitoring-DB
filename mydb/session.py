@@ -85,9 +85,9 @@ def get_sats():
     sat_result = session.execute(stmt).scalars()
     return list(sat_result)
 
-def get_sat_names():
+def get_sat_ids():
     sat_objs = get_sats()
-    return [sat.name for sat in sat_objs]
+    return [sat.id for sat in sat_objs]
 
 def get_active_sat():
     sat_objs = get_sats()
@@ -99,9 +99,9 @@ def get_reg():
     region_result = session.execute(stmt).scalars()
     return list(region_result)
 
-def get_reg_names():
+def get_reg_ids():
     reg_objs = get_reg()
-    return [reg.name for reg in reg_objs]
+    return [reg.id for reg in reg_objs]
 # landsat_regions = [reg for reg in reg_objs if reg.sat_id == 1]
 # geos_regions = [reg for reg in reg_objs if reg.sat_id == 2]
 
@@ -114,6 +114,10 @@ def get_data():
 def get_data_type():
     data_objs = get_data()
     return [data.data_type for data in data_objs]
+
+def get_data_ids():
+    data_objs = get_data()
+    return [data.id for data in data_objs]
 # landsat_data = [data for data in data_objs if data.sat_id == 1]
 # geos_data = [data for data in data_objs if data.sat_id == 2]
 
@@ -141,9 +145,19 @@ def get_data_type():
 # session.delete(landsat)
 # session.delete(geos)
 # session.commit()
-def delete_sat_tb():
-    # session.query(Satellite).delete()
-    session.delete(landsat)
+
+# def delete_landsat():
+#     session.delete(landsat)
+#     session.commit()
+
+# def delete_geos():
+#     session.delete(geos)
+#     session.commit()
+
+def delete_sat(user_id):
+    stmt = select(Satellite).where(Satellite.id == user_id)
+    sat_result = session.execute(stmt).scalars().first()
+    session.delete(sat_result)
     session.commit()
 
 # info: delete region
@@ -153,6 +167,12 @@ def delete_sat_tb():
 #session.delete(mexico_gulf)
 #session.commit()
 
+def delete_region(user_id):
+    stmt = select(Region).where(Region.id == user_id)
+    region_result = session.execute(stmt).scalars().first()
+    session.delete(region_result)
+    session.commit()
+
 
 # info: delete data
 #session.delete(surface_temp)
@@ -160,3 +180,9 @@ def delete_sat_tb():
 #session.delete(cloud_cover)
 #session.delete(wind_speed)
 #session.commit()
+
+def delete_data(user_id):
+    stmt = select(SatelliteData).where(SatelliteData.id == user_id)
+    data_result = session.execute(stmt).scalars().first()
+    session.delete(data_result)
+    session.commit()
