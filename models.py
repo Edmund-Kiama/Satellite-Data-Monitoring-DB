@@ -13,3 +13,7 @@ class Satellite_data(Base):
 class Region(Base):
     pass
 
+# note: Creates the engine
+engine = create_engine('sqlite:///monitoring.db')
+Base.metadata.create_all(engine)
+
