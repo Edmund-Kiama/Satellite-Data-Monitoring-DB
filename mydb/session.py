@@ -17,6 +17,16 @@ geos = Satellite(
     description = "NOAA's weather satellite"
 )
 
+def add_sat(sat_name, sat_orbit_type, sat_status, sat_description):
+    instance = Satellite(
+        name = sat_name,
+        orbit_type = sat_orbit_type,
+        status = sat_status,
+        description = sat_description
+    )
+    session.add(instance)
+    session.commit()     
+
 session.add_all([landsat,geos])
 session.commit()
 
@@ -46,6 +56,16 @@ mexico_gulf = Region(
     longitude = -90.00,
 )
 
+def add_region(sat_idx, reg_name, reg_latitude, reg_longitude):
+    instance = Region(
+        sat_id = sat_idx,
+        name = reg_name,
+        latitude = reg_latitude,
+        longitude = reg_longitude
+    )
+    session.add(instance)
+    session.commit() 
+
 session.add_all([amazon, sahara, east_coast, mexico_gulf])
 session.commit()
 
@@ -69,11 +89,21 @@ cloud_cover = SatelliteData(
     date_recorded = f"{date(2025, 2, 10)}",
 )
 wind_speed = SatelliteData(
-    sat_id = 1,
+    sat_id = 2,
     data_type = "Wind Speed",
     data_value = "120 km/h",
     date_recorded = f"{date(2025, 3, 6)}",
 )
+
+def add_data(sat_idx, type_data, value_data, date):
+    instance = SatelliteData(
+        sat_id = sat_idx,
+        data_type = type_data,
+        data_value = value_data,
+        date_recorded = date
+    )
+    session.add(instance)
+    session.commit() 
 
 session.add_all([surface_temp, vegetation_index, cloud_cover, wind_speed])
 session.commit()
