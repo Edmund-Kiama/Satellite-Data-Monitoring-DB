@@ -4,7 +4,7 @@
 
 # for creating new values for tables - ask the user for the values
 
-# display just displays the tables
+# display just displays the tables, and find by id
 
 # for updating, 
 #     - the user picks which table and which value to change,

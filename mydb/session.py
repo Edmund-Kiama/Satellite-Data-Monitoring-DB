@@ -42,8 +42,8 @@ east_coast = Region(
 mexico_gulf = Region(
     sat_id = 2,
     name = "Gulf of Mexico",
-    latitude = 25,
-    longitude = -90,
+    latitude = 25.00,
+    longitude = -90.00,
 )
 
 session.add_all([amazon, sahara, east_coast, mexico_gulf])
