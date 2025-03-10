@@ -42,8 +42,8 @@ east_coast = Region(
 mexico_gulf = Region(
     sat_id = 2,
     name = "Gulf of Mexico",
-    latitude = 25.0,
-    longitude = -90.0,
+    latitude = 25,
+    longitude = -90,
 )
 
 session.add_all([amazon, sahara, east_coast, mexico_gulf])
@@ -126,8 +126,21 @@ geos_data = [data for data in data_objs if data.sat_id == 2]
 
 # Note: DELETE
 # info: delete satellite
+# session.delete(landsat)
+# session.delete(geos)
+# session.commit()
 
 # info: delete region
+#session.delete(amazon)
+#session.delete(sahara)
+#session.delete(east_coast)
+#session.delete(mexico_gulf)
+#session.commit()
+
 
 # info: delete data
-
+#session.delete(surface_temp)
+#session.delete(vegetation_index)
+#session.delete(cloud_cover)
+#session.delete(wind_speed)
+#session.commit()
