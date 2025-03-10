@@ -1,4 +1,4 @@
-from models import session, Satellite, SatelliteData, Region
+from mydb.models import session, Satellite, SatelliteData, Region
 from sqlalchemy import select
 from datetime import date
 
@@ -80,30 +80,42 @@ session.commit()
 
 #READ
 # read satellites
-stmt = select(Satellite)
-sat_result = session.execute(stmt).scalars()
+def get_sats():
+    stmt = select(Satellite)
+    sat_result = session.execute(stmt).scalars()
+    return list(sat_result)
 
-sat_objs = list(sat_result)
-sat_names = [sat.name for sat in sat_objs]
-active_sats = [sat for sat in sat_objs if sat.status == "active"]
+def get_sat_names():
+    sat_objs = get_sats()
+    return [sat.name for sat in sat_objs]
+
+def get_active_sat():
+    sat_objs = get_sats()
+    return [sat for sat in sat_objs if sat.status == "active"]
 
 # read region
-stmt = select(Region)
-region_result = session.execute(stmt).scalars()
+def get_reg():
+    stmt = select(Region)
+    region_result = session.execute(stmt).scalars()
+    return list(region_result)
 
-reg_objs = list(region_result)
-reg_names = [reg.name for reg in reg_objs]
-landsat_regions = [reg for reg in reg_objs if reg.sat_id == 1]
-geos_regions = [reg for reg in reg_objs if reg.sat_id == 2]
+def get_reg_names():
+    reg_objs = get_reg()
+    return [reg.name for reg in reg_objs]
+# landsat_regions = [reg for reg in reg_objs if reg.sat_id == 1]
+# geos_regions = [reg for reg in reg_objs if reg.sat_id == 2]
 
 #read sat data
-stmt = select(SatelliteData)
-data_result = session.execute(stmt).scalars()
+def get_data():
+    stmt = select(SatelliteData)
+    data_result = session.execute(stmt).scalars()
+    return list(data_result)
 
-data_objs = list(data_result)
-data_types = [data.data_type for data in data_objs]
-landsat_data = [data for data in data_objs if data.sat_id == 1]
-geos_data = [data for data in data_objs if data.sat_id == 2]
+def get_data_type():
+    data_objs = get_data()
+    return [data.data_type for data in data_objs]
+# landsat_data = [data for data in data_objs if data.sat_id == 1]
+# geos_data = [data for data in data_objs if data.sat_id == 2]
 
 # note: UPDATE
 # info: update satellite
@@ -129,6 +141,10 @@ geos_data = [data for data in data_objs if data.sat_id == 2]
 # session.delete(landsat)
 # session.delete(geos)
 # session.commit()
+def delete_sat_tb():
+    # session.query(Satellite).delete()
+    session.delete(landsat)
+    session.commit()
 
 # info: delete region
 #session.delete(amazon)
