@@ -52,27 +52,27 @@ session.commit()
 #sat data
 surface_temp = SatelliteData(
     sat_id = 1,
-    data_type = 'Surface Temperature',
-    data_value = '32°c',
-    date_recorded = date(2024, 12, 27),
+    data_type = "Surface Temperature",
+    data_value = "32°c",
+    date_recorded = f"{date(2024, 12, 27)}",
 )
 vegetation_index = SatelliteData(
     sat_id = 1,
-    data_type = 'NDVI(Veg Index)',
-    data_value = '0.75',
-    date_recorded = date(2025, 3, 9),
+    data_type = "NDVI(Veg Index)",
+    data_value = "0.75",
+    date_recorded = f"{date(2025, 3, 9)}",
 )
 cloud_cover = SatelliteData(
     sat_id = 2,
-    data_type = 'Cloud COver',
-    data_value = '65%',
-    date_recorded = date(2025, 2, 10),
+    data_type = "Cloud COver",
+    data_value = "65%",
+    date_recorded = f"{date(2025, 2, 10)}",
 )
 wind_speed = SatelliteData(
     sat_id = 1,
-    data_type = 'Wind Speed',
-    data_value = '120 km/h',
-    date_recorded = date(2025, 3, 6),
+    data_type = "Wind Speed",
+    data_value = "120 km/h",
+    date_recorded = f"{date(2025, 3, 6)}",
 )
 
 session.add_all([surface_temp, vegetation_index, cloud_cover, wind_speed])
@@ -85,7 +85,7 @@ sat_result = session.execute(stmt).scalars()
 
 sat_objs = list(sat_result)
 sat_names = [sat.name for sat in sat_objs]
-active_sats = [sat for sat in sat_objs if sat.status == 'active']
+active_sats = [sat for sat in sat_objs if sat.status == "active"]
 
 # read region
 stmt = select(Region)
