@@ -2,7 +2,9 @@ from mydb.models import session, Satellite, SatelliteData, Region
 from sqlalchemy import select
 from datetime import date
 
-# CREATE
+
+
+# mark: CREATE
 # sat
 landsat = Satellite(
     name = "Landsat-9",
@@ -108,7 +110,10 @@ def add_data(sat_idx, type_data, value_data, date):
 session.add_all([surface_temp, vegetation_index, cloud_cover, wind_speed])
 session.commit()
 
-#READ
+
+
+
+#mark: READ
 # read satellites
 def get_sats():
     stmt = select(Satellite)
@@ -151,12 +156,26 @@ def get_data_ids():
 # landsat_data = [data for data in data_objs if data.sat_id == 1]
 # geos_data = [data for data in data_objs if data.sat_id == 2]
 
-# note: UPDATE
+
+
+
+# mark UPDATE
+
 # info: update satellite
 # stmt = select(Satellite).where(Satellite.id == 1 )
 # sat1 = session.scalars(stmt).first()
 # sat1.name = "Not Landsat-9"
 # session.commit()
+
+def update_sat(sat_id, variable, new_value):
+    stmt = select(Satellite).where(Satellite.id == sat_id )
+    sat = session.scalars(stmt).first()
+    if sat:
+        setattr(sat, variable, new_value)
+        session.commit()
+    else:
+        print(f"There is no Satellite of Id {sat_id}")
+
 
 # info: update region
 # stmt = select(Region).where(Region.id == 1 )
@@ -164,13 +183,34 @@ def get_data_ids():
 # region1.name = "Not Amazon"
 # session.commit()
 
+def update_region(reg_id, variable, new_value):
+    stmt = select(Region).where(Region.id == reg_id )
+    reg = session.scalars(stmt).first()
+    if reg:
+        setattr(reg, variable, new_value)
+        session.commit()
+    else:
+        print(f"There is no Region of Id {reg_id}")
+
 # info: update data
 # stmt = select(SatelliteData).where(SatelliteData.id == 1 )
 # data1 = session.scalars(stmt).first()
 # data1.name = "Not Surface Temperature"
 # session.commit()
 
-# Note: DELETE
+def update_data(data_id, variable, new_value):
+    stmt = select(SatelliteData).where(SatelliteData.id == data_id )
+    data = session.scalars(stmt).first()
+    if data:
+        setattr(data, variable, new_value)
+        session.commit()
+    else:
+        print(f"There is no Satellite Data of Id {data_id}")
+
+
+
+
+# mark: DELETE
 # info: delete satellite
 # session.delete(landsat)
 # session.delete(geos)

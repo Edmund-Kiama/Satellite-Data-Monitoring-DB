@@ -2,6 +2,8 @@
 from mydb.session import get_sats, get_reg, get_data, get_sat_ids, get_data_ids, get_reg_ids
 from mydb.session import delete_sat, delete_region, delete_data
 from mydb.session import add_sat, add_region, add_data
+from mydb.session import update_data, update_region, update_sat
+
 on_loop = True
 
 
@@ -72,7 +74,7 @@ def display_table():
 
 def handle_sat_create():
     print("")
-    print("You chose Satellite table")
+    print("You chose to add in Satellite table")
     print("Values required are: name, orbit_type,status.description")
     print("")
 
@@ -104,7 +106,7 @@ def handle_sat_create():
 
 def handle_satdata_create():
     print("")
-    print("You chose SatelliteData table")
+    print("You chose to add in SatelliteData table")
     print("Values required are: name, orbit_type,status.description")
     print("")
 
@@ -132,7 +134,7 @@ def handle_satdata_create():
 
 def handle_region_create():
     print("")
-    print("You chose Region table")
+    print("You chose to add in Region table")
     print("Values required are: sat_id, name, latitude, longitude")
     print("")
 
@@ -201,8 +203,66 @@ def create_table():
 
 # mark: Update Function   
 
-def update_table():
+def handle_sat_edit():
+    print("----------------------------------------------------------------")
+    print("")
+    print("You chose to edit in Satellite table")
+    print("")
+    print("Which satellite do you wanna edit?")
+    
+    while True:
+        try:
+            sat_id = int(input("Choose by Id: "))
+            break
+        except ValueError:
+            print("")
+            print(f"{sat_id} is not an Integer. Try again")
+            print("")
+
+    print("Satellite Columns = ['name','orbit_type','status','description']")
+    print("")
+    variable = input("Which of its column is to be edited?")
+    print("")
+    new_value = input("What's the new value: ")
+    print("")
+
+    if sat_id and variable and new_value:
+        update_sat(sat_id, variable, new_value)
+
+
     pass
+
+
+def handle_reg_edit():
+    pass
+
+
+def handle_data_update():
+    pass
+
+
+def update_table():
+    print("")
+    print("Choose Table to Edit")
+    print("-----------------------")
+    print("1. Satellites table")
+    print("2. Satellites Data table")
+    print("3. Regions table")
+    print("")
+
+    while True:
+        user = input("Which table is to be edited: ")
+        if user in ["1", "2", "3"]:
+            break
+        else:
+            print(f"{user} is Invalid Input. Choose in (1, 2, 3)")
+    
+    if user == "1":
+        handle_sat_edit()
+    elif user == "2":
+        handle_data_edit()
+    else:
+        handle_region_edit()
 
 
 
