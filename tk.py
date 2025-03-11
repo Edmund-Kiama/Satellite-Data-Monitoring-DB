@@ -27,9 +27,11 @@ def back_buttons(my_command=None):
         back_btn = tk.Button(root, text="Back to Main Menu", command=main_menu)
         back_btn.pack(padx=30, pady=30)
 
+
 def clear_screen():
     for widget in root.winfo_children():
         widget.destroy()
+
 
 
 
@@ -55,6 +57,7 @@ def sat_table():
 
     back_buttons(display_table)
 
+
 def data_table():
     clear_screen()
     
@@ -74,6 +77,7 @@ def data_table():
     tree.pack(expand=True, fill="both", padx=10, pady=10)
 
     back_buttons(display_table)
+
 
 def reg_table():
     clear_screen()
@@ -95,6 +99,7 @@ def reg_table():
     
     back_buttons(display_table)
 
+
 def display_table():
     clear_screen()
 
@@ -111,6 +116,7 @@ def display_table():
     btn3.pack(pady=5)
 
     back_buttons()
+
 
 
 
@@ -177,6 +183,7 @@ def handle_add_sat():
 
     back_buttons(create_table_var)
 
+
 def handle_add_data():
     clear_screen()
     
@@ -227,7 +234,7 @@ def handle_add_data():
         date_recorded = entry_date.get()
 
         if sat_id and data_type and data_value and date_recorded:
-            add_data(sat_id, data_type, data_value, date_recorded)
+            add_data(int(sat_id), data_type, data_value, date_recorded)
 
             messagebox.showinfo("Adding Info","New Satellite Data has been added.")
             create_table_var()
@@ -238,6 +245,7 @@ def handle_add_data():
     add_btn.pack(padx=10, pady=10)
 
     back_buttons(create_table_var)
+
 
 def handle_add_reg():
     clear_screen()
@@ -289,7 +297,7 @@ def handle_add_reg():
         longitude = entry_long.get()
 
         if sat_id and name and latitude and longitude:
-            add_data(sat_id, name, latitude, longitude)
+            add_region(int(sat_id), name, float(latitude), float(longitude))
 
             messagebox.showinfo("Adding Info","New Region has been added.")
             create_table_var()
@@ -298,6 +306,8 @@ def handle_add_reg():
 
     add_btn = tk.Button(root, text="Add", command=add_reg_details)
     add_btn.pack(padx=10, pady=10)
+
+    back_buttons(create_table_var)
 
 
 def create_table_var():
@@ -319,10 +329,12 @@ def create_table_var():
 
 
 
+
 # MARK: UPDATE TABLES
 
 def update_table():
-    messagebox.showinfo("Update", "Updating a table value...")
+    messagebox.showinfo("Update", "Coming Soon")
+
 
 
 
@@ -367,6 +379,7 @@ def del_sat():
 
     back_buttons(delete_table)
 
+
 def del_data():
     clear_screen()
     
@@ -405,6 +418,7 @@ def del_data():
     btn.pack(padx=5, pady=5)
 
     back_buttons(delete_table)
+
 
 def del_reg():
     clear_screen()
@@ -445,6 +459,7 @@ def del_reg():
 
     back_buttons(delete_table)
 
+
 def delete_table():
     clear_screen()
 
@@ -461,6 +476,7 @@ def delete_table():
     btn3.pack(pady=5)
 
     back_buttons()
+
 
 
 
@@ -487,9 +503,13 @@ def main_menu():
 
 
 
+
 def main():
     main_menu()
     root.mainloop()
+
+
+
 
 if __name__ == "__main__":
     main()

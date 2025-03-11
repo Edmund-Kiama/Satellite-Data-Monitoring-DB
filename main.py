@@ -24,6 +24,7 @@ def sat_tb_display():
     print("------------------------------------------------------------------------------------------")
     print("")
 
+
 def satdata_tb_display():
     data = get_data()
     print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
@@ -36,7 +37,7 @@ def satdata_tb_display():
         print(f"| {dat.id:<3}   |   {dat.sat_id:<3}  |   {dat.data_type:<20}    |   {dat.data_value:<10}  |   {dat.date_recorded:<10}")
     print("------------------------------------------------------------------------------")
     print("")
-    
+
 
 def region_tb_display():
     regions = get_reg()
@@ -77,6 +78,7 @@ def display_table():
     else:
         region_tb_display()
    
+
 
 
 
@@ -219,6 +221,7 @@ def create_table():
         handle_satdata_create()
     else:
         handle_region_create()
+
 
 
 
@@ -411,7 +414,6 @@ def handle_data_edit():
         print("")
 
 
-
 def update_table():
     print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     print("")
@@ -437,6 +439,7 @@ def update_table():
         handle_data_edit()
     else:
         handle_region_edit()
+
 
 
 
@@ -602,6 +605,7 @@ def menu():
 
 
 
+
 def main():
     while on_loop:
         user = menu()
@@ -615,6 +619,7 @@ def main():
             delete_table()
         else:
             exit_menu()
+
 
 
 
