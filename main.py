@@ -23,8 +23,6 @@ def sat_tb_display():
         print(f"| {sat.id:<3}   |   {sat.name:<10}  |   {sat.orbit_type:<5}    |   {sat.status:<8}  |   {sat.description:<20}")
     print("------------------------------------------------------------------------------------------")
     print("")
-    print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-    print("")
 
 def satdata_tb_display():
     data = get_data()
@@ -37,8 +35,6 @@ def satdata_tb_display():
     for dat in data:
         print(f"| {dat.id:<3}   |   {dat.sat_id:<3}  |   {dat.data_type:<20}    |   {dat.data_value:<10}  |   {dat.date_recorded:<10}")
     print("------------------------------------------------------------------------------")
-    print("")
-    print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     print("")
     
 
@@ -53,8 +49,6 @@ def region_tb_display():
     for reg in regions:
         print(f"| {reg.id:<3}   |   {reg.sat_id:<3}  |   {reg.name:<20}    |   {reg.latitude:<7}  |   {reg.longitude:<7}")
     print("------------------------------------------------------------------------")
-    print("")
-    print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     print("")
 
 
@@ -82,9 +76,6 @@ def display_table():
         satdata_tb_display()
     else:
         region_tb_display()
-
-    print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-    print("")
    
 
 
@@ -106,7 +97,7 @@ def handle_sat_create():
         if orbit_type in ["MEO", "LEO", "GEO"]:
             break
         else: 
-            raise ValueError("Status can only be 'MEO' or 'LEO' OR 'GEO' .")
+            print("Status can only be 'MEO' or 'LEO' OR 'GEO' .")
 
     while True:
         status = input("Satellite's status ['active', 'inactive']: ")
@@ -114,7 +105,7 @@ def handle_sat_create():
         if status in ["active", "inactive"]:
             break
         else: 
-            raise ValueError("Status can only be 'active' or 'inactive' .")
+            print("Status can only be 'active' or 'inactive' .")
                 
     description = input("Satellite's description: ")
     print("")
@@ -125,9 +116,6 @@ def handle_sat_create():
         print("New Satellite Instance has been added.")
         print("-------------------------------------------")
         print("")
-    
-    print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-    print("")
 
 
 def handle_satdata_create():
@@ -159,9 +147,6 @@ def handle_satdata_create():
         print("New Satellite Data Instance has been added.")
         print("--------------------------------------------")
         print("")
-    
-    print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-    print("")
 
 
 def handle_region_create():
@@ -207,9 +192,6 @@ def handle_region_create():
         print("New Satellite Data Instance has been added.")
         print("--------------------------------------------")
         print("")
-    
-    print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-    print("")
 
 
 def create_table():
@@ -303,8 +285,6 @@ def handle_sat_edit():
         print("          Update is successful!")
         print("---------------------------------------------")
         print("")
-        print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-        print("")
 
 
 def handle_region_edit():
@@ -360,7 +340,6 @@ def handle_region_edit():
         print("          Update is successful!")
         print("---------------------------------------------")
         print("")
-        print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
 
 
 def handle_data_edit():
@@ -412,7 +391,6 @@ def handle_data_edit():
         print("          Update is successful!")
         print("---------------------------------------------")
         print("")
-        print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
 
 
 
@@ -468,8 +446,6 @@ def handle_sat_delete():
     print(f"     Satellite of Id {user} has been deleted successfully!!")
     print("-----------------------------------------------------------------")
     print("")
-    print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-    print("")
 
 
 def handle_region_delete():
@@ -494,8 +470,6 @@ def handle_region_delete():
     print(f"     Region of Id {user} has been deleted successfully!!")
     print("-----------------------------------------------------------------")
     print("")
-    print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-    print("")
 
 
 def handle_data_delete():
@@ -519,8 +493,6 @@ def handle_data_delete():
     print("-----------------------------------------------------------------")
     print(f"     Data Type of Id {user} has been deleted successfully!!")
     print("-----------------------------------------------------------------")
-    print("")
-    print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     print("")
 
 
