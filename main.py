@@ -97,7 +97,7 @@ def handle_sat_create():
         if orbit_type in ["MEO", "LEO", "GEO"]:
             break
         else: 
-            print("Status can only be 'MEO' or 'LEO' OR 'GEO' .")
+            print("Status can only be 'MEO' or 'LEO' or 'GEO' .")
 
     while True:
         status = input("Satellite's status ['active', 'inactive']: ")
@@ -105,7 +105,7 @@ def handle_sat_create():
         if status in ["active", "inactive"]:
             break
         else: 
-            print("Status can only be 'active' or 'inactive' .")
+            print("Status can only be 'active' or 'inactive'.")
                 
     description = input("Satellite's description: ")
     print("")
@@ -231,7 +231,7 @@ def handle_sat_edit():
     print("You chose to edit in Satellite table")
     print("")
     sat_tb_display()
-    print("Which satellite do you wanna edit?")
+    print("Which satellite do you wanna edit? ")
     print("")
     
     while True:
@@ -240,7 +240,7 @@ def handle_sat_edit():
             print("")
             break
         except ValueError:
-            print(f"{sat_id} is not an Integer. Try again")
+            print("The value you provided is not an Integer. Try again")
             print("")
 
     print("Satellite Columns = ['name','orbit_type','status','description']")
@@ -303,11 +303,12 @@ def handle_region_edit():
             print("")
             break
         except ValueError:
-            print(f"{reg_id} is not an Integer. Try again")
+            print("The value you provided is not an Integer. Try again")
             print("")
 
     print("Region Columns = ['sat_id', 'name','latitude','longitude']")
     print("")
+
     while True:
         variable = input("Which of its column is to be edited? ")
         print("")
@@ -316,22 +317,33 @@ def handle_region_edit():
         else:
             print("Please pick among ['sat_id', 'name','latitude','longitude']")
             print("")
+
     while True:
         try:
             if variable in ["latitude", "longitude"]:
                 new_value = float(input("What's the new value: "))
                 print("")
                 break
-            elif variable == "sat_id":
+        except ValueError:
+            print("The value you provided is not a float")
+            print("")
+
+        try:
+            if variable == "sat_id":
                 new_value = int(input("What's the new value: "))
                 print("")
                 break
-            elif variable == "name" :
+        except ValueError:
+            print("The value you provided is not a integer")
+            print("")
+
+        try:
+            if variable == "name" :
                 new_value = input("What's the new value: ")
                 print("")   
                 break
         except ValueError: 
-            print("Try again!")
+            print(f"{new_value} is Invalid! Try again!")
             print("")
 
     if reg_id and variable and new_value:
@@ -358,11 +370,12 @@ def handle_data_edit():
             print("")
             break
         except ValueError:
-            print(f"{data_id} is not an Integer. Try again")
+            print("The value you provided is not an Integer. Try again")
             print("")
 
     print("Satellite Data Columns = ['sat_id', 'data_type', 'data_value', 'date_recorded']")
     print("")
+
     while True:
         variable = input("Which of its column is to be edited? ")
         print("")
@@ -371,18 +384,23 @@ def handle_data_edit():
         else:
             print("Please pick among  ['sat_id', 'data_type', 'data_value', 'date_recorded']")
             print("")
+
     while True:
         try:
             if variable in ["data_type", "data_value", "date_recorded"]:
                 new_value = input("What's the new value: ")
                 print("")
                 break
-            elif variable == "sat_id":
+        except ValueError:
+            print(f'{new_value} is not in ["data_type", "data_value", "date_recorded"]')
+            print("")
+        try:
+            if variable == "sat_id":
                 new_value = int(input("What's the new value: "))
                 print("")
                 break
         except ValueError:
-            print("Try again !")
+            print("The value you provided is not an Integer")
             print("")
 
     if data_id and variable and new_value:
@@ -433,8 +451,15 @@ def handle_sat_delete():
     print("")
 
     while True:
-        user = int(input("Choose Id: "))
-        print("")
+        while True:
+            try:
+                user = int(input("Choose Id: "))
+                print("")
+                break
+            except ValueError:
+                print("The value you provided is not an Integer")
+                print("")
+
         if user in sat_ids:
             break
         else:
@@ -458,8 +483,15 @@ def handle_region_delete():
     print("")
 
     while True:
-        user = int(input("Choose Id: "))
-        print("")
+        while True:
+            try:
+                user = int(input("Choose Id: "))
+                print("")
+                break
+            except ValueError:
+                print("The value you provided is not an Integer")
+                print("")
+                
         if user in reg_ids:
             break
         else:
@@ -482,8 +514,15 @@ def handle_data_delete():
     print("")
 
     while True:
-        user = int(input("Choose Id: "))
-        print("")
+        while True:
+            try:
+                user = int(input("Choose Id: "))
+                print("")
+                break
+            except ValueError:
+                print("The value you provided is not an Integer")
+                print("")
+
         if user in data_ids:
             break
         else:
