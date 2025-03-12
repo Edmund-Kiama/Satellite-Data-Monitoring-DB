@@ -92,23 +92,53 @@ def display_data_table():
 
 def sat_table():
     display_satellite_table()
-    back_buttons(display_table)
 
+    btn2 = tk.Button(root, text="Add new satellite", command=handle_add_sat)
+    btn2.pack(pady=5)
 
+    btn3 = tk.Button(root, text="Update satellite value", command=handle_update_sat)
+    btn3.pack(pady=5)
+
+    btn4 = tk.Button(root, text="Delete satellite", command=del_sat)
+    btn4.pack(pady=5)
+
+    back_buttons()
+
+    
 def data_table():
     display_data_table()
-    back_buttons(display_table)
+
+    btn2 = tk.Button(root, text="Add new satellite data", command=handle_add_data)
+    btn2.pack(pady=5)
+
+    btn3 = tk.Button(root, text="Update satellite data value", command=handle_update_data)
+    btn3.pack(pady=5)
+
+    btn4 = tk.Button(root, text="Delete satellite data", command=del_data)
+    btn4.pack(pady=5)
+
+    back_buttons()
 
 
 def reg_table():
     display_region_table()
-    back_buttons(display_table)
+
+    btn2 = tk.Button(root, text="Add new region", command=handle_add_reg)
+    btn2.pack(pady=5)
+
+    btn3 = tk.Button(root, text="Update region value", command=handle_update_reg)
+    btn3.pack(pady=5)
+
+    btn4 = tk.Button(root, text="Delete region", command=del_reg)
+    btn4.pack(pady=5)
+
+    back_buttons()
 
 
 def display_table():
     clear_screen()
 
-    label = tk.Label(root, text="Choose Table to display ", font=("Arial", 14, "bold"))
+    label = tk.Label(root, text="Choose Table", font=("Arial", 14, "bold"))
     label.pack(padx=10, pady=10)
 
     btn1 = tk.Button(root, text="Satellite Table", command=sat_table)
@@ -119,8 +149,6 @@ def display_table():
 
     btn3 = tk.Button(root, text="Region Table", command=reg_table)
     btn3.pack(pady=5)
-
-    back_buttons()
 
 
 
@@ -163,14 +191,14 @@ def handle_add_sat():
             add_sat(name, orbit_type, status, description)
 
             messagebox.showinfo("Adding Info","New Satellite has been added.")
-            create_table_var()
+            sat_table()
         else:
             messagebox.showinfo("Info","Please fill the whole form")
 
     add_btn = tk.Button(root, text="Add", command=add_sat_details)
     add_btn.pack(padx=10, pady=10)
 
-    back_buttons(create_table_var)
+    back_buttons(sat_table)
 
 
 def handle_add_data():
@@ -210,14 +238,14 @@ def handle_add_data():
             add_data(int(sat_id), data_type, data_value, date_recorded)
 
             messagebox.showinfo("Adding Info","New Satellite Data has been added.")
-            create_table_var()
+            data_table()
         else:
             messagebox.showinfo("Info","Please fill the whole form")
 
     add_btn = tk.Button(root, text="Add", command=add_data_details)
     add_btn.pack(padx=10, pady=10)
 
-    back_buttons(create_table_var)
+    back_buttons(data_table)
 
 
 def handle_add_reg():
@@ -258,32 +286,14 @@ def handle_add_reg():
             add_region(int(sat_id), name, float(latitude), float(longitude))
 
             messagebox.showinfo("Adding Info","New Region has been added.")
-            create_table_var()
+            reg_table()
         else:
             messagebox.showinfo("Info","Please fill the whole form")
 
     add_btn = tk.Button(root, text="Add", command=add_reg_details)
     add_btn.pack(padx=10, pady=10)
 
-    back_buttons(create_table_var)
-
-
-def create_table_var():
-    clear_screen()
-
-    label = tk.Label(root, text="Choose Table to add new instance", font=("Arial", 14, "bold"))
-    label.pack(padx=10, pady=10)
-
-    btn1 = tk.Button(root, text="Satellite Table", command=handle_add_sat)
-    btn1.pack(pady=5)
-
-    btn2 = tk.Button(root, text="Satellite Data Table", command=handle_add_data)
-    btn2.pack(pady=5)
-
-    btn3 = tk.Button(root, text="Region Table", command=handle_add_reg)
-    btn3.pack(pady=5)
-
-    back_buttons()
+    back_buttons(reg_table)
 
 
 
@@ -318,14 +328,14 @@ def handle_update_sat():
         if sat_id and column and var:
             update_sat(int(sat_id), column, var)
             messagebox.showinfo("Editing Info",f"Satellite of ID {sat_id} has been edited")
-            create_table_var()
+            sat_table()
         else:
             messagebox.showinfo("Edit","Please fill the whole form")
 
     btn = tk.Button(root, text="Edit", command=edit_sat)
     btn.pack(padx=5, pady=5)
 
-    back_buttons(update_table)
+    back_buttons(sat_table)
 
 
 def handle_update_data():
@@ -356,14 +366,14 @@ def handle_update_data():
         if data_id and column and var:
             update_data(int(data_id), column, var)
             messagebox.showinfo("Editing Info",f"Satellite Data of Id {data_id} has been edited")
-            create_table_var()
+            data_table()
         else:
             messagebox.showinfo("Edit","Please fill the whole form")
 
     btn = tk.Button(root, text="Edit", command=edit_data)
     btn.pack(padx=5, pady=5)
 
-    back_buttons(update_table)
+    back_buttons(data_table)
 
 
 def handle_update_reg():
@@ -394,32 +404,14 @@ def handle_update_reg():
         if reg_id and column and var:
             update_region(int(reg_id), column, var)
             messagebox.showinfo("Editing Info",f"Region of ID {reg_id} has been edited")
-            create_table_var()
+            reg_table()
         else:
             messagebox.showinfo("Edit","Please fill the whole form")
 
     btn = tk.Button(root, text="Edit", command=edit_reg)
     btn.pack(padx=5, pady=5)
 
-    back_buttons(update_table)
-
-
-def update_table():
-    clear_screen()
-
-    label = tk.Label(root, text="Choose Table to update ", font=("Arial", 14, "bold"))
-    label.pack(padx=10, pady=10)
-
-    btn1 = tk.Button(root, text="Satellite Table", command=handle_update_sat)
-    btn1.pack(pady=5)
-
-    btn2 = tk.Button(root, text="Satellite Data Table", command=handle_update_data)
-    btn2.pack(pady=5)
-
-    btn3 = tk.Button(root, text="Region Table", command=handle_update_reg)
-    btn3.pack(pady=5)
-
-    back_buttons()
+    back_buttons(reg_table)
 
 
 
@@ -442,12 +434,12 @@ def del_sat():
         val = user_input.get()
         delete_sat(val)
         messagebox.showinfo("Delete Info",f"Deleted Satellite of Id: {val}")
-        delete_table()
+        sat_table()
         
     btn = tk.Button(root, text="Delete", command=deleting_sat)
     btn.pack(padx=5, pady=5)
 
-    back_buttons(delete_table)
+    back_buttons(sat_table)
 
 
 def del_data():
@@ -466,12 +458,12 @@ def del_data():
         val = user_input.get()
         delete_data(val)
         messagebox.showinfo("Delete Info",f"Deleted Satellite Data of Id: {val}")
-        delete_table()
+        data_table()
         
     btn = tk.Button(root, text="Delete", command=deleting_data)
     btn.pack(padx=5, pady=5)
 
-    back_buttons(delete_table)
+    back_buttons(data_table)
 
 
 def del_reg():
@@ -490,30 +482,12 @@ def del_reg():
         val = user_input.get()
         delete_region(val)
         messagebox.showinfo("Delete Info",f"Deleted Region of Id: {val}")
-        delete_table()
+        reg_table()
         
     btn = tk.Button(root, text="Delete", command=deleting_reg)
     btn.pack(padx=5, pady=5)
 
-    back_buttons(delete_table)
-
-
-def delete_table():
-    clear_screen()
-
-    label = tk.Label(root, text="Choose Table to delete ", font=("Arial", 14, "bold"))
-    label.pack(padx=10, pady=10)
-
-    btn1 = tk.Button(root, text="Satellite Table", command=del_sat)
-    btn1.pack(pady=5)
-
-    btn2 = tk.Button(root, text="Satellite Data Table", command=del_data)
-    btn2.pack(pady=5)
-
-    btn3 = tk.Button(root, text="Region Table", command=del_reg)
-    btn3.pack(pady=5)
-
-    back_buttons()
+    back_buttons(reg_table)
 
 
 
@@ -521,23 +495,13 @@ def delete_table():
 def main_menu():
     clear_screen()
 
-    label = tk.Label(root, text="Satellite Monitoring System", font=("Arial", 14, "bold"))
+    label = tk.Label(root, text="Satellite Monitoring System DataBase", font=("Arial", 14, "bold"))
     label.pack(padx=10, pady=10)
 
-    btn1 = tk.Button(root, text="Display Tables", command=display_table)
-    btn1.pack(pady=5)
-
-    btn2 = tk.Button(root, text="Create New Table Value", command=create_table_var)
-    btn2.pack(pady=5)
-
-    btn3 = tk.Button(root, text="Update Table Value", command=update_table)
-    btn3.pack(pady=5)
-
-    btn4 = tk.Button(root, text="Delete Table Value", command=delete_table)
-    btn4.pack(pady=5)
+    display_table()
 
     btn5 = tk.Button(root, text="Exit", command=exit)
-    btn5.pack(pady=5)
+    btn5.pack(padx=20, pady=20)
 
 
 def main():
