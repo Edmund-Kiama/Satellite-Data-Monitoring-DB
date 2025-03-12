@@ -172,6 +172,7 @@ def update_sat(sat_id, variable, new_value):
     sat = session.scalars(stmt).first()
     if sat:
         setattr(sat, variable, new_value)
+        # fix: sat.update(variable, new_value)
         session.commit()
     else:
         print(f"There is no Satellite of Id {sat_id}")

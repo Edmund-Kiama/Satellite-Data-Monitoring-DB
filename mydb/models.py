@@ -66,6 +66,10 @@ class SatelliteData(Base):
             self._data_type = data_type
         else:
             raise ValueError(f"{data_type} is not an string")
+        
+    #fix: 
+    # def update(self, variable, new_value):
+    #     setattr(self, variable, new_value)
 
 class Region(Base):
 
