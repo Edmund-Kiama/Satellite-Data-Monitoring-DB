@@ -10,7 +10,7 @@ class Satellite(Base):
     __tablename__ = "satellites"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String, unique=True, nullable=False)
+    name = Column(String, nullable=False)
     _orbit_type = Column("orbit_type", String, nullable=False) # info: LEO,MEO,GEO
     _status = Column("status", String, nullable=False) # info: active, inactive
     description = Column(String, nullable=False)

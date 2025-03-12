@@ -8,10 +8,7 @@ on_loop = True
 
 # fix: find object by attribute
 
-
-# mark: Display Functions
-
-def sat_tb_display():
+def display_satellite():
     sats = get_sats()
     print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     print("")
@@ -24,8 +21,7 @@ def sat_tb_display():
     print("------------------------------------------------------------------------------------------")
     print("")
 
-
-def satdata_tb_display():
+def display_data():
     data = get_data()
     print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     print("")
@@ -38,8 +34,7 @@ def satdata_tb_display():
     print("------------------------------------------------------------------------------")
     print("")
 
-
-def region_tb_display():
+def display_region():
     regions = get_reg()
     print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     print("")
@@ -53,30 +48,101 @@ def region_tb_display():
     print("")
 
 
-def display_table():
+# mark: Display Functions
+
+def sat_tb_display():
+    display_satellite()
+
     print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     print("")
-    print("Choose Table to Display")
+    print("Choose you desired CRUD operation")
     print("-----------------------")
-    print("1. Satellites table")
-    print("2. Satellites Data table")
-    print("3. Regions table")
+    print("1. Add new satellite")
+    print("2. Update satellite value")
+    print("3. Delete satellite")
+    print("4. Back")
     print("")
 
     while True:
-        user = input("Which table is to be displayed: ")
+        user = input("Choose: ")
         print("")
-        if user in ["1", "2", "3"]:
+        if user in ["1", "2", "3", "4"]:
             break
         else:
-            print(f"{user} is Invalid Input. Choose in (1, 2, 3)")
+            print(f"{user} is Invalid Input. Choose in (1, 2, 3, 4)")
+            print("")
     
     if user == "1":
-        sat_tb_display()
+        handle_sat_create()
     elif user == "2":
-        satdata_tb_display()
+        handle_sat_edit()
+    elif user =="3":
+        handle_sat_delete()
     else:
-        region_tb_display()
+        pass
+    
+def satdata_tb_display():
+    display_data()
+
+    print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+    print("")
+    print("Choose you desired CRUD operation")
+    print("-----------------------")
+    print("1. Add new satellite data")
+    print("2. Update satellite data value")
+    print("3. Delete satellite data")
+    print("4. Back")
+    print("")
+
+    while True:
+        user = input("Choose: ")
+        print("")
+        if user in ["1", "2", "3", "4"]:
+            break
+        else:
+            print(f"{user} is Invalid Input. Choose in (1, 2, 3, 4)")
+            print("")
+    
+    if user == "1":
+        handle_satdata_create()
+    elif user == "2":
+        handle_data_edit()
+    elif user == "3":
+        handle_data_delete()
+    else:
+        pass
+
+
+def region_tb_display():
+    display_region()
+
+    print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+    print("")
+    print("Choose you desired CRUD operation")
+    print("-----------------------")
+    print("1. Add new region")
+    print("2. Update region value")
+    print("3. Delete region")
+    print("4. Back")
+    print("")
+
+    while True:
+        user = input("Choose: ")
+        print("")
+        if user in ["1", "2", "3", "4"]:
+            break
+        else:
+            print(f"{user} is Invalid Input. Choose in (1, 2, 3, 4)")
+            print("")
+    
+    if user == "1":
+        handle_region_create()
+    elif user == "2":
+        handle_region_edit()
+    elif user == "3":
+        handle_region_delete()
+    else:
+        pass
    
 
 
@@ -87,14 +153,14 @@ def display_table():
 def handle_sat_create():
     print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     print("")
-    print("You chose to add in Satellite table")
+    print("Satellite table")
     print("Values required are: name, orbit_type,status.description")
     print("")
 
-    name = input("Satellite's name: ")
+    name = input("Satellite's name: ").strip()
     print("")
     while True:
-        orbit_type = input("Satellite's orbit type ['MEO', 'LEO', 'GEO']: ")
+        orbit_type = input("Satellite's orbit type ['MEO', 'LEO', 'GEO']: ").upper().strip()
         print("")
         if orbit_type in ["MEO", "LEO", "GEO"]:
             break
@@ -102,14 +168,14 @@ def handle_sat_create():
             print("Status can only be 'MEO' or 'LEO' or 'GEO' .")
 
     while True:
-        status = input("Satellite's status ['active', 'inactive']: ")
+        status = input("Satellite's status ['active', 'inactive']: ").lower().strip()
         print("")
         if status in ["active", "inactive"]:
             break
         else: 
             print("Status can only be 'active' or 'inactive'.")
                 
-    description = input("Satellite's description: ")
+    description = input("Satellite's description: ").strip()
     print("")
 
     if name and orbit_type and status and description:
@@ -123,24 +189,24 @@ def handle_sat_create():
 def handle_satdata_create():
     print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     print("")
-    print("You chose to add in SatelliteData table")
+    print("Satellite Data table")
     print("Values required are: name, orbit_type,status.description")
     print("")
 
     while True:
         try:
-            sat_idx = int(input("Satellite Id that took the data recording: "))
+            sat_idx = int(input("Satellite Id that took the data recording: ").strip())
             print("")
             break
         except ValueError:
             print("Invalid input! Please enter an integer.")  
             print("")
 
-    type_data = input("Type of Data: ")
+    type_data = input("Type of Data: ").strip()
     print("")
-    value_data = input("Value of Data: ")
+    value_data = input("Value of Data: ").strip()
     print("")
-    date = input("Date of recording Data [YYYY-MM-DD]: ")
+    date = input("Date of recording Data [YYYY-MM-DD]: ").strip()
     print("")
 
     if sat_idx and type_data and value_data and date:
@@ -154,25 +220,25 @@ def handle_satdata_create():
 def handle_region_create():
     print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     print("")
-    print("You chose to add in Region table")
+    print("Region table")
     print("Values required are: sat_id, name, latitude, longitude")
     print("")
 
     while True:
         try:
-            sat_idx = int(input("Satellite Id for the region: "))
+            sat_idx = int(input("Satellite Id for the region: ").strip())
             print("")
             break
         except ValueError:
             print("Invalid input! Please enter an integer.")  
             print("")
 
-    reg_name = input("Name of the region: ")
+    reg_name = input("Name of the region: ").strip()
     print("")
 
     while True:
         try:
-            reg_latitude = float(input("Latitude of the region: "))
+            reg_latitude = float(input("Latitude of the region: ").strip())
             print("")
             break
         except ValueError:
@@ -181,7 +247,7 @@ def handle_region_create():
     
     while True:
         try:
-            reg_longitude = float(input("Longitude of the region: "))
+            reg_longitude = float(input("Longitude of the region: ").strip())
             print("")
             break
         except ValueError:
@@ -196,52 +262,30 @@ def handle_region_create():
         print("")
 
 
-def create_table():
-    print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-    print("")
-    print("Choose from which table to create instances for")
-    print("-----------------------")
-    print("1. Satellites table")
-    print("2. Satellites Data table")
-    print("3. Regions table")
-    print("")
-
-    while True:
-        user = input("Which table do you wanna create instances from: ")
-        print("")
-        if user in ["1", "2", "3"]:
-            break
-        else:
-            print(f"{user} is Invalid Input. Choose in (1, 2, 3)")
-            print("")
-    
-    if user == "1":
-        handle_sat_create()
-    elif user == "2":
-        handle_satdata_create()
-    else:
-        handle_region_create()
-
-
 
 
 # mark: Update Function   
 
 def handle_sat_edit():
+    sat_ids = get_sat_ids()
     
     print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     print("")
     print("You chose to edit in Satellite table")
     print("")
-    sat_tb_display()
     print("Which satellite do you wanna edit? ")
     print("")
     
     while True:
         try:
-            sat_id = int(input("Choose by Id: "))
+            sat_id = int(input(f"Choose by Id: {sat_ids}").strip())
             print("")
-            break
+
+            if sat_id in sat_ids:
+                break
+            else:
+                print(f"{sat_id} is not part of {sat_ids}")
+                print("")
         except ValueError:
             print("The value you provided is not an Integer. Try again")
             print("")
@@ -249,7 +293,7 @@ def handle_sat_edit():
     print("Satellite Columns = ['name','orbit_type','status','description']")
     print("")
     while True:
-        variable = input("Which of its column is to be edited?")
+        variable = input("Which of its column is to be edited? ").strip().lower()
         print("")
         if variable in ['name','orbit_type','status','description']:
             break
@@ -259,7 +303,7 @@ def handle_sat_edit():
     while True:
         try:
             if variable == "orbit_type" :
-                new_value = input("What's the new value: ")
+                new_value = input("What's the new value: ").strip().upper()
                 print("")
                 if new_value in ["LEO", "MEO", "GEO"]:
                     break
@@ -267,7 +311,7 @@ def handle_sat_edit():
                     print(f'{new_value} is not in ["LEO", "MEO", "GEO"]')
                     print("")
             elif variable == "status":
-                new_value = input("What's the new value: ")
+                new_value = input("What's the new value: ").strip()
                 print("")
                 if new_value in ["active", "inactive"]:
                     break
@@ -275,7 +319,7 @@ def handle_sat_edit():
                     print(f'{new_value} is not in ["active", "inactive"]')
                     print("")
             elif (variable == "name" or variable == "description") :
-                new_value = input("What's the new value: ")
+                new_value = input("What's the new value: ").strip()
                 print("")
                 break
         except ValueError:
@@ -291,20 +335,25 @@ def handle_sat_edit():
 
 
 def handle_region_edit():
+    reg_ids = get_reg_ids()
     
     print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     print("")
     print("You chose to edit in Region table")
     print("")
-    region_tb_display()
     print("Which region do you wanna edit? ")
     print("")
     
     while True:
         try:
-            reg_id = int(input("Choose by Id: "))
+            reg_id = int(input(f"Choose by Id:{reg_ids} ").strip())
             print("")
-            break
+
+            if reg_id in reg_ids:
+                break
+            else:
+                print(f"{reg_id} is not part of {reg_ids}")
+                print("")
         except ValueError:
             print("The value you provided is not an Integer. Try again")
             print("")
@@ -313,7 +362,7 @@ def handle_region_edit():
     print("")
 
     while True:
-        variable = input("Which of its column is to be edited? ")
+        variable = input("Which of its column is to be edited? ").strip().lower()
         print("")
         if variable in ['sat_id', 'name','latitude','longitude']:
             break
@@ -324,7 +373,7 @@ def handle_region_edit():
     while True:
         try:
             if variable in ["latitude", "longitude"]:
-                new_value = float(input("What's the new value: "))
+                new_value = float(input("What's the new value: ").strip())
                 print("")
                 break
         except ValueError:
@@ -333,7 +382,7 @@ def handle_region_edit():
 
         try:
             if variable == "sat_id":
-                new_value = int(input("What's the new value: "))
+                new_value = int(input("What's the new value: ").strip())
                 print("")
                 break
         except ValueError:
@@ -342,7 +391,7 @@ def handle_region_edit():
 
         try:
             if variable == "name" :
-                new_value = input("What's the new value: ")
+                new_value = input("What's the new value: ").strip()
                 print("")   
                 break
         except ValueError: 
@@ -358,20 +407,27 @@ def handle_region_edit():
 
 
 def handle_data_edit():
+    data_ids = get_data_ids()
     
     print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     print("")
     print("You chose to edit in Satellite Data table")
     print("")
-    satdata_tb_display()
-    print("Which data do you wanna edit?")
+    
+    print("Which data do you wanna edit? ")
     print("")
     
     while True:
         try:
-            data_id = int(input("Choose by Id: "))
+            data_id = int(input(f"Choose by Id: {data_ids} ").strip())
             print("")
-            break
+
+            if data_id in data_ids:
+                break
+            else:
+                print(f"{data_id} is not part of  {data_ids}")
+                print("")
+
         except ValueError:
             print("The value you provided is not an Integer. Try again")
             print("")
@@ -380,7 +436,7 @@ def handle_data_edit():
     print("")
 
     while True:
-        variable = input("Which of its column is to be edited? ")
+        variable = input("Which of its column is to be edited? ").strip().lower()
         print("")
         if variable in ['sat_id', 'data_type', 'data_value', 'date_recorded']:
                 break
@@ -391,7 +447,7 @@ def handle_data_edit():
     while True:
         try:
             if variable in ["data_type", "data_value", "date_recorded"]:
-                new_value = input("What's the new value: ")
+                new_value = input("What's the new value: ").strip()
                 print("")
                 break
         except ValueError:
@@ -399,7 +455,7 @@ def handle_data_edit():
             print("")
         try:
             if variable == "sat_id":
-                new_value = int(input("What's the new value: "))
+                new_value = int(input("What's the new value: ").strip())
                 print("")
                 break
         except ValueError:
@@ -414,61 +470,33 @@ def handle_data_edit():
         print("")
 
 
-def update_table():
-    print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-    print("")
-    print("Choose Table to Edit")
-    print("-----------------------")
-    print("1. Satellites table")
-    print("2. Satellites Data table")
-    print("3. Regions table")
-    print("")
-
-    while True:
-        user = input("Which table is to be edited: ")
-        print("")
-        if user in ["1", "2", "3"]:
-            break
-        else:
-            print(f"{user} is Invalid Input. Choose in (1, 2, 3)")
-            print("")
-    
-    if user == "1":
-        handle_sat_edit()
-    elif user == "2":
-        handle_data_edit()
-    else:
-        handle_region_edit()
-
-
 
 
 # mark: Delete Functions
 def handle_sat_delete():
-    sat_tb_display()
     sat_ids = get_sat_ids()
 
     print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     print("")
-    print(f"Choose which satellite to delete according to its Id: {sat_ids}")
+    print("Choose which satellite to delete according to its Id: ")
     print("")
 
     while True:
-        while True:
-            try:
-                user = int(input("Choose Id: "))
-                print("")
+        try:
+            user = int(input(f"Choose Id: {sat_ids} ").strip())
+            print("")
+
+            if user in sat_ids:
                 break
-            except ValueError:
-                print("The value you provided is not an Integer")
+            else:
+                print(f"No satellite with Id of {user}")
                 print("")
 
-        if user in sat_ids:
-            break
-        else:
-            print(f"No satellite with Id of {user}")
+
+        except ValueError:
+            print("The value you provided is not an Integer")
             print("")
-    
+
     delete_sat(user)
     print("-----------------------------------------------------------------")
     print(f"     Satellite of Id {user} has been deleted successfully!!")
@@ -477,7 +505,6 @@ def handle_sat_delete():
 
 
 def handle_region_delete():
-    region_tb_display()
     reg_ids = get_reg_ids()
 
     print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
@@ -486,20 +513,19 @@ def handle_region_delete():
     print("")
 
     while True:
-        while True:
-            try:
-                user = int(input("Choose Id: "))
-                print("")
+        try:
+            user = int(input("Choose Id: ").strip())
+            print("")
+            
+            if user in reg_ids:
                 break
-            except ValueError:
-                print("The value you provided is not an Integer")
-                print("")
+            else:
+                print(f"No Region with Id of {user}")  
+
+        except ValueError:
+            print("The value you provided is not an Integer")
+            print("")
                 
-        if user in reg_ids:
-            break
-        else:
-            print(f"No Region with Id of {user}")
-    
     delete_region(user)
     print("-----------------------------------------------------------------")
     print(f"     Region of Id {user} has been deleted successfully!!")
@@ -508,7 +534,6 @@ def handle_region_delete():
 
 
 def handle_data_delete():
-    satdata_tb_display()
     data_ids = get_data_ids()
 
     print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
@@ -517,20 +542,18 @@ def handle_data_delete():
     print("")
 
     while True:
-        while True:
-            try:
-                user = int(input("Choose Id: "))
-                print("")
+        try:
+            user = int(input("Choose Id: ").strip())
+            print("")
+            if user in data_ids:
                 break
-            except ValueError:
-                print("The value you provided is not an Integer")
-                print("")
+            else:
+                print(f"No Data Type with Id of {user}")   
 
-        if user in data_ids:
-            break
-        else:
-            print(f"No Data Type with Id of {user}")
-    
+        except ValueError:
+            print("The value you provided is not an Integer")
+            print("")
+
     delete_data(user)
     print("-----------------------------------------------------------------")
     print(f"     Data Type of Id {user} has been deleted successfully!!")
@@ -538,30 +561,6 @@ def handle_data_delete():
     print("")
 
 
-def delete_table():
-    print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-    print("")
-    print("Choose Table to Delete")
-    print("-----------------------")
-    print("1. Satellites table")
-    print("2. Satellites Data table")
-    print("3. Regions table")
-    print("")
-
-    while True:
-        user = input("Which table is to be deleted: ")
-        print("")
-        if user in ["1", "2", "3"]:
-            break
-        else:
-            print(f"{user} is Invalid Input. Choose in (1, 2, 3)")
-    
-    if user == "1":
-        handle_sat_delete()
-    elif user == "2":
-        handle_data_delete()
-    else:
-        handle_region_delete()
 
 
 def exit_menu():
@@ -573,32 +572,28 @@ def exit_menu():
     print("")
     
 
-
-
 def menu():
     print("")
     print("######################################################################")
     print("               SATELLITE     MONITORING      SYSTEM")
     print("")
-    print("Choose your Options")
+    print("Choose your Table")
     print("-------------------")
-    print("1. Display tables")
-    print("2. Create new table value")
-    print("3. Update table value")
-    print("4. Delete table value")
-    print("5. Exit")
+    print("1. Satellite Table")
+    print("2. Satellite Data Table")
+    print("3. Region Table")
+    print("4. Exit")
     print("")
     print("######################################################################")
     print("")
 
     while True:
-        user = input("Your option [1, 2, 3, 4, 5]: ")
+        user = input("Your option [1, 2, 3, 4]: "). strip()
         print("")
-        print("")
-        if user in ["1", "2", "3", "4", "5"]:
+        if user in ["1", "2", "3", "4"]:
             break;
         else:
-            print("f{user} is Invalid! Choose in (1, 2, 3, 4, 5).")
+            print("f{user} is Invalid! Choose in (1, 2, 3, 4).")
             print("")
 
     return user
@@ -610,13 +605,11 @@ def main():
     while on_loop:
         user = menu()
         if user == "1":
-            display_table()
+            sat_tb_display()
         elif user == "2":
-            create_table()
-        elif user == "3":
-            update_table()
-        elif user == "4":
-            delete_table()
+            satdata_tb_display()
+        elif user =="3":
+            region_tb_display()
         else:
             exit_menu()
 
