@@ -27,17 +27,11 @@ def back_buttons(my_command=None):
         back_btn = tk.Button(root, text="Back to Main Menu", command=main_menu)
         back_btn.pack(padx=30, pady=30)
 
-
 def clear_screen():
     for widget in root.winfo_children():
         widget.destroy()
 
-
-
-
-# MARK: DISPLAY TABLES
-
-def sat_table():
+def display_satellite_table():
     clear_screen()
     
     sats = get_sats()
@@ -55,10 +49,25 @@ def sat_table():
 
     tree.pack(expand=True, fill="both", padx=10, pady=10)
 
-    back_buttons(display_table)
+def display_region_table():
+    clear_screen()
+    
+    regions = get_reg()
 
+    tree = ttk.Treeview(root, columns=("Id", "Sat Id", "Name", "Latitude", "Longitude"), show="headings")
+    
+    tree.heading("Id", text="Id")
+    tree.heading("Sat Id", text="Satellite Id")
+    tree.heading("Name", text="Name")
+    tree.heading("Latitude", text="Latitude")
+    tree.heading("Longitude", text="Longitude")
 
-def data_table():
+    for reg in regions:
+        tree.insert("", tk.END, values=(reg.id, reg.sat_id, reg.name, reg.latitude, reg.longitude))
+
+    tree.pack(expand=True, fill="both", padx=20, pady=20)
+
+def display_data_table():
     clear_screen()
     
     data = get_data()
@@ -76,27 +85,23 @@ def data_table():
 
     tree.pack(expand=True, fill="both", padx=10, pady=10)
 
+
+
+
+# MARK: DISPLAY TABLES
+
+def sat_table():
+    display_satellite_table()
+    back_buttons(display_table)
+
+
+def data_table():
+    display_data_table()
     back_buttons(display_table)
 
 
 def reg_table():
-    clear_screen()
-    
-    regions = get_reg()
-
-    tree = ttk.Treeview(root, columns=("Id", "Sat Id", "Name", "Latitude", "Longitude"), show="headings")
-    
-    tree.heading("Id", text="Id")
-    tree.heading("Sat Id", text="Satellite Id")
-    tree.heading("Name", text="Name")
-    tree.heading("Latitude", text="Latitude")
-    tree.heading("Longitude", text="Longitude")
-
-    for reg in regions:
-        tree.insert("", tk.END, values=(reg.id, reg.sat_id, reg.name, reg.latitude, reg.longitude))
-
-    tree.pack(expand=True, fill="both", padx=20, pady=20)
-    
+    display_region_table()
     back_buttons(display_table)
 
 
@@ -123,23 +128,7 @@ def display_table():
 # MARK: CREATE TABLES VARIABLES 
 
 def handle_add_sat():
-    clear_screen()
-    
-    sats = get_sats()
-
-    tree = ttk.Treeview(root, columns=("Id", "Name", "Orbit Type", "Status", "Description"), show="headings")
-    
-    tree.heading("Id", text="Satellite Id")
-    tree.heading("Name", text="Satellite Name")
-    tree.heading("Orbit Type", text="Orbit Type")
-    tree.heading("Status", text="Status")
-    tree.heading("Description", text="Description")
-
-    for sat in sats:
-        tree.insert("", tk.END, values=(sat.id, sat.name, sat.orbit_type, sat.status, sat.description))
-
-    tree.pack(expand=True, fill="both", padx=10, pady=10)
-
+    display_satellite_table()
 
     form_label = tk.Label(root, text="Satellite Form", font=("Arial", 14))
     form_label.pack(padx=10, pady=10)
@@ -185,23 +174,7 @@ def handle_add_sat():
 
 
 def handle_add_data():
-    clear_screen()
-    
-    data = get_data()
-
-    tree = ttk.Treeview(root, columns=("Id", "Sat Id", "Data Type", "Data Value", "Date Recorded"), show="headings")
-    
-    tree.heading("Id", text="Id")
-    tree.heading("Sat Id", text="Satellite Id")
-    tree.heading("Data Type", text="Data Type")
-    tree.heading("Data Value", text="Data Value")
-    tree.heading("Date Recorded", text="Date Recorded")
-
-    for dat in data:
-        tree.insert("", tk.END, values=(dat.id, dat.sat_id, dat.data_type, dat.data_value, dat.date_recorded))
-
-    tree.pack(expand=True, fill="both", padx=10, pady=10)
-
+    display_data_table()
 
     form_label = tk.Label(root, text="Satellite Data Form", font=("Arial", 14))
     form_label.pack(padx=10, pady=10)
@@ -248,22 +221,7 @@ def handle_add_data():
 
 
 def handle_add_reg():
-    clear_screen()
-    
-    regions = get_reg()
-
-    tree = ttk.Treeview(root, columns=("Id", "Sat Id", "Name", "Latitude", "Longitude"), show="headings")
-    
-    tree.heading("Id", text="Id")
-    tree.heading("Sat Id", text="Satellite Id")
-    tree.heading("Name", text="Name")
-    tree.heading("Latitude", text="Latitude")
-    tree.heading("Longitude", text="Longitude")
-
-    for reg in regions:
-        tree.insert("", tk.END, values=(reg.id, reg.sat_id, reg.name, reg.latitude, reg.longitude))
-
-    tree.pack(expand=True, fill="both", padx=20, pady=20)
+    display_region_table()
 
 
     form_label = tk.Label(root, text="Region Form", font=("Arial", 14))
@@ -333,22 +291,7 @@ def create_table_var():
 # MARK: UPDATE TABLES VARIABLES 
 
 def handle_update_sat():
-    clear_screen()
-    
-    sats = get_sats()
-
-    tree = ttk.Treeview(root, columns=("Id", "Name", "Orbit Type", "Status", "Description"), show="headings")
-    
-    tree.heading("Id", text="Satellite Id")
-    tree.heading("Name", text="Satellite Name")
-    tree.heading("Orbit Type", text="Orbit Type")
-    tree.heading("Status", text="Status")
-    tree.heading("Description", text="Description")
-
-    for sat in sats:
-        tree.insert("", tk.END, values=(sat.id, sat.name, sat.orbit_type, sat.status, sat.description))
-
-    tree.pack(expand=True, fill="both", padx=10, pady=10)
+    display_satellite_table()
 
     sat_ids = get_sat_ids()
 
@@ -386,22 +329,7 @@ def handle_update_sat():
 
 
 def handle_update_data():
-    clear_screen()
-    
-    data = get_data()
-
-    tree = ttk.Treeview(root, columns=("Id", "Sat Id", "Data Type", "Data Value", "Date Recorded"), show="headings")
-    
-    tree.heading("Id", text="Id")
-    tree.heading("Sat Id", text="Satellite Id")
-    tree.heading("Data Type", text="Data Type")
-    tree.heading("Data Value", text="Data Value")
-    tree.heading("Date Recorded", text="Date Recorded")
-
-    for dat in data:
-        tree.insert("", tk.END, values=(dat.id, dat.sat_id, dat.data_type, dat.data_value, dat.date_recorded))
-
-    tree.pack(expand=True, fill="both", padx=10, pady=10)
+    display_data_table()
 
     data_ids = get_data_ids()
 
@@ -439,22 +367,7 @@ def handle_update_data():
 
 
 def handle_update_reg():
-    clear_screen()
-    
-    regions = get_reg()
-
-    tree = ttk.Treeview(root, columns=("Id", "Sat Id", "Name", "Latitude", "Longitude"), show="headings")
-    
-    tree.heading("Id", text="Id")
-    tree.heading("Sat Id", text="Satellite Id")
-    tree.heading("Name", text="Name")
-    tree.heading("Latitude", text="Latitude")
-    tree.heading("Longitude", text="Longitude")
-
-    for reg in regions:
-        tree.insert("", tk.END, values=(reg.id, reg.sat_id, reg.name, reg.latitude, reg.longitude))
-
-    tree.pack(expand=True, fill="both", padx=20, pady=20)
+    display_region_table()
 
     reg_ids = get_reg_ids()
 
@@ -490,6 +403,7 @@ def handle_update_reg():
 
     back_buttons(update_table)
 
+
 def update_table():
     clear_screen()
 
@@ -513,23 +427,7 @@ def update_table():
 # MARK: DELETE TABLES
 
 def del_sat():
-    clear_screen()
-    
-    sats = get_sats()
-
-    tree = ttk.Treeview(root, columns=("Id", "Name", "Orbit Type", "Status", "Description"), show="headings")
-    
-    tree.heading("Id", text="Satellite Id")
-    tree.heading("Name", text="Satellite Name")
-    tree.heading("Orbit Type", text="Orbit Type")
-    tree.heading("Status", text="Status")
-    tree.heading("Description", text="Description")
-
-    for sat in sats:
-        tree.insert("", tk.END, values=(sat.id, sat.name, sat.orbit_type, sat.status, sat.description))
-
-    tree.pack(expand=True, fill="both", padx=10, pady=10)
-
+    display_satellite_table()
 
     user_input = tk.StringVar()
     sat_ids = get_sat_ids()
@@ -553,23 +451,7 @@ def del_sat():
 
 
 def del_data():
-    clear_screen()
-    
-    data = get_data()
-
-    tree = ttk.Treeview(root, columns=("Id", "Sat Id", "Data Type", "Data Value", "Date Recorded"), show="headings")
-    
-    tree.heading("Id", text="Id")
-    tree.heading("Sat Id", text="Satellite Id")
-    tree.heading("Data Type", text="Data Type")
-    tree.heading("Data Value", text="Data Value")
-    tree.heading("Date Recorded", text="Date Recorded")
-
-    for dat in data:
-        tree.insert("", tk.END, values=(dat.id, dat.sat_id, dat.data_type, dat.data_value, dat.date_recorded))
-
-    tree.pack(expand=True, fill="both", padx=10, pady=10)
-
+    display_data_table()
 
     user_input = tk.StringVar()
     data_ids = get_data_ids()
@@ -593,23 +475,7 @@ def del_data():
 
 
 def del_reg():
-    clear_screen()
-    
-    regions = get_reg()
-
-    tree = ttk.Treeview(root, columns=("Id", "Sat Id", "Name", "Latitude", "Longitude"), show="headings")
-    
-    tree.heading("Id", text="Id")
-    tree.heading("Sat Id", text="Satellite Id")
-    tree.heading("Name", text="Name")
-    tree.heading("Latitude", text="Latitude")
-    tree.heading("Longitude", text="Longitude")
-
-    for reg in regions:
-        tree.insert("", tk.END, values=(reg.id, reg.sat_id, reg.name, reg.latitude, reg.longitude))
-
-    tree.pack(expand=True, fill="both", padx=20, pady=20)
-
+    display_region_table()
 
     user_input = tk.StringVar()
     reg_ids = get_reg_ids()
@@ -672,8 +538,6 @@ def main_menu():
 
     btn5 = tk.Button(root, text="Exit", command=exit)
     btn5.pack(pady=5)
-
-
 
 
 def main():
