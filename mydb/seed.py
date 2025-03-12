@@ -3,6 +3,10 @@ from sqlalchemy import select
 from datetime import date
 
 
+session.query(Satellite).delete()
+session.query(Region).delete()
+session.query(SatelliteData).delete()
+session.commit()
 
 # mark: CREATE
 # sat

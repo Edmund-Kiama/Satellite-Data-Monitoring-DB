@@ -1,8 +1,8 @@
 
-from mydb.session import get_sats, get_data, get_reg, get_sat_ids ,get_data_ids, get_reg_ids
-from mydb.session import delete_sat, delete_region, delete_data
-from mydb.session import add_sat, add_region, add_data
-from mydb.session import update_data, update_region, update_sat
+from mydb.seed import get_sats, get_data, get_reg, get_sat_ids ,get_data_ids, get_reg_ids
+from mydb.seed import delete_sat, delete_region, delete_data
+from mydb.seed import add_sat, add_region, add_data
+from mydb.seed import update_data, update_region, update_sat
 
 import tkinter as tk
 from tkinter import messagebox
