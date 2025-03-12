@@ -10,7 +10,7 @@ from tkinter import ttk
 
 root = tk.Tk()
 root.title("Satellite Monitoring System")
-root.geometry("1500x800")
+root.geometry("1600x800")
 
 
 def back_buttons(my_command=None):
@@ -166,12 +166,12 @@ def handle_add_sat():
     entry_name = tk.Entry(root)
     entry_name.pack()
 
-    orbit_label = tk.Label(root, text="Orbit Type: ['MEO', 'LEO', 'GEO']")
+    orbit_label = tk.Label(root, text="Orbit Type: [MEO, LEO, GEO]")
     orbit_label.pack(padx=5, pady=5)
     entry_orbit = tk.Entry(root)
     entry_orbit.pack()
 
-    status_label = tk.Label(root, text="Status: ['active', 'inactive']")
+    status_label = tk.Label(root, text="Status: [active, inactive]")
     status_label.pack(padx=5, pady=5)
     entry_status = tk.Entry(root)
     entry_status.pack()
@@ -181,17 +181,26 @@ def handle_add_sat():
     entry_desc = tk.Entry(root)
     entry_desc.pack()
 
+
+
     def add_sat_details():
-        name = entry_name.get()
-        orbit_type = entry_orbit.get()
-        status = entry_status.get()
-        description = entry_desc.get()
+        name = entry_name.get().capitalize().strip()
+        orbit_type = entry_orbit.get().upper().strip()
+        status = entry_status.get().lower().strip()
+        description = entry_desc.get().capitalize().strip()
 
         if name and orbit_type and status and description:
-            add_sat(name, orbit_type, status, description)
+            if orbit_type in ['MEO', 'LEO', 'GEO'] and status in ['active', 'inactive']:
+                add_sat(name, orbit_type, status, description)
+                messagebox.showinfo("Adding Info","New Satellite has been added.")
+                sat_table()
 
-            messagebox.showinfo("Adding Info","New Satellite has been added.")
-            sat_table()
+            elif orbit_type not in ['MEO', 'LEO', 'GEO'] :
+                messagebox.showerror("ValueError", "Orbit type is not in [MEO, LEO, GEO]")
+            
+            else:
+                messagebox.showerror("ValueError", "Status is not in [active, inactive]")
+
         else:
             messagebox.showinfo("Info","Please fill the whole form")
 
@@ -229,16 +238,25 @@ def handle_add_data():
     entry_date.pack()
 
     def add_data_details():
-        sat_id = entry_sat_id.get()
-        data_type = entry_type.get()
-        data_value = entry_value.get()
-        date_recorded = entry_date.get()
+        sat_id = entry_sat_id.get().strip()
+        data_type = entry_type.get().strip().capitalize()
+        data_value = entry_value.get().strip()
+        date_recorded = entry_date.get().strip()
 
         if sat_id and data_type and data_value and date_recorded:
-            add_data(int(sat_id), data_type, data_value, date_recorded)
-
-            messagebox.showinfo("Adding Info","New Satellite Data has been added.")
-            data_table()
+            try:
+                sat_id = int(sat_id)
+                if sat_id in sat_ids:
+                    add_data(sat_id, data_type, data_value, date_recorded)
+                    messagebox.showinfo("Adding Info","New Satellite Data has been added.")
+                    data_table()
+                else:
+                    messagebox.showerror("ValueError", "Satellite Id does not exist!")
+            except:
+                if not isinstance(sat_id,int):
+                    messagebox.showerror("ValueError", "Satellite Id is not an Integer")
+                else:
+                    messagebox.showerror("ValueError", "Unexpected Error")
         else:
             messagebox.showinfo("Info","Please fill the whole form")
 
@@ -277,16 +295,32 @@ def handle_add_reg():
     entry_long.pack()
 
     def add_reg_details():
-        sat_id = entry_sat_id.get()
-        name = entry_name.get()
-        latitude = entry_lat.get()
-        longitude = entry_long.get()
+        sat_id = entry_sat_id.get().strip()
+        name = entry_name.get().strip().capitalize()
+        latitude = entry_lat.get().strip()
+        longitude = entry_long.get().strip()
 
         if sat_id and name and latitude and longitude:
-            add_region(int(sat_id), name, float(latitude), float(longitude))
+            try:
+                sat_id = int(sat_id)
+                latitude = float(latitude)
+                longitude = float(longitude)
 
-            messagebox.showinfo("Adding Info","New Region has been added.")
-            reg_table()
+                if sat_id in sat_ids:
+                    add_region(int(sat_id), name, float(latitude), float(longitude))
+                    messagebox.showinfo("Adding Info","New Region has been added.")
+                    reg_table()
+                else:
+                    messagebox.showerror("404", "Satellite Id does not exist")
+
+            except:
+                if not isinstance(sat_id, int):
+                    messagebox.showerror("Value Error", "Satellite Id is not an Integer")
+                elif not isinstance(latitude, float):
+                    messagebox.showerror("Value Error", "Latitude is not a Float")
+                else:
+                    messagebox.showerror("Value Error", "Longitude is not a Float")
+
         else:
             messagebox.showinfo("Info","Please fill the whole form")
 
@@ -299,6 +333,23 @@ def handle_add_reg():
 
 
 # MARK: UPDATE TABLES VARIABLES 
+
+def verify_sat(column, var):
+
+    if column == "orbit_type":
+        if var in ['LEO', 'MEO', 'GEO']:
+            return True
+        else:
+            messagebox.showerror("ValueError", f"{var} should either be MEO, LEO or GEO")
+    
+    elif column == "status":
+        if var in ['active', 'inactive']:
+            return True
+        else:
+            messagebox.showerror("ValueError", f"{var} should either be active or inactive")
+
+    else:
+        return True
 
 def handle_update_sat():
     display_satellite_table()
@@ -321,22 +372,52 @@ def handle_update_sat():
     entry_var.pack()
         
     def edit_sat():
-        sat_id = entry_id.get()
-        column = entry_column.get()
-        var = entry_var.get()
+        sat_id = entry_id.get().strip()
+        column = entry_column.get().strip().lower()
+        var = entry_var.get().strip()
 
-        if sat_id and column and var:
-            update_sat(int(sat_id), column, var)
-            messagebox.showinfo("Editing Info",f"Satellite of ID {sat_id} has been edited")
-            sat_table()
-        else:
-            messagebox.showinfo("Edit","Please fill the whole form")
+        try:
+            sat_id = int(sat_id)
+
+            if sat_id and column and var:
+
+                if column in ['name', 'orbit_type', 'status', 'description'] and sat_id in sat_ids:
+
+                    if verify_sat(column, var):
+                        update_sat(sat_id, column, var)
+                        messagebox.showinfo("Editing Info",f"Satellite of ID {sat_id} has been edited")
+                        sat_table()
+
+                elif sat_id not in sat_ids:
+                    messagebox.showerror("404 Not Found", "Satellite Id does not exist!")
+                else:
+                    messagebox.showerror("404 Not Found", "Column is not found")
+
+            else:
+                messagebox.showinfo("Edit","Please fill the whole form")
+
+        except:
+            messagebox.showerror("ValueError", "Satellite Id is not an Integer!")
 
     btn = tk.Button(root, text="Edit", command=edit_sat)
     btn.pack(padx=5, pady=5)
 
     back_buttons(sat_table)
 
+def verify_data(column, var):
+    data_ids = get_data_ids()
+
+    if column == "sat_id":
+        try:
+            var = int(var)
+            if var in data_ids:
+                return True
+            else:
+                messagebox.showerror("404 Not Found", "No sat_id found")
+        except:
+            messagebox.showinfo("Invalid Edit",f"{var} should be an Integer")
+    else: 
+        return True
 
 def handle_update_data():
     display_data_table()
@@ -359,22 +440,68 @@ def handle_update_data():
     entry_var.pack()
         
     def edit_data():
-        data_id = entry_id.get()
-        column = entry_column.get()
-        var = entry_var.get()
+        data_id = entry_id.get().strip()
+        column = entry_column.get().strip().lower()
+        var = entry_var.get().strip()
 
-        if data_id and column and var:
-            update_data(int(data_id), column, var)
-            messagebox.showinfo("Editing Info",f"Satellite Data of Id {data_id} has been edited")
-            data_table()
-        else:
-            messagebox.showinfo("Edit","Please fill the whole form")
+        try:
+            data_id = int(data_id)
+
+            if data_id and column and var:
+
+                if column in ['sat_id', 'data_type', 'data_value', 'date_recorded'] and data_id in data_ids:
+
+                    if verify_data(column, var):
+                        update_data(data_id, column, var)
+                        messagebox.showinfo("Editing Info",f"Satellite Data of Id {data_id} has been edited")
+                        data_table()
+
+                elif data_id not in data_ids:
+                    messagebox.showerror("404 Not Found", "Satellite Data Id is not found!")
+                else:
+                    messagebox.showerror("404 Not Found", "Column not found!")
+
+            else:
+                messagebox.showinfo("Edit","Please fill the whole form")
+
+        except:
+            messagebox.showerror("ValueError", "Satellite Data Id is not an Integer")
 
     btn = tk.Button(root, text="Edit", command=edit_data)
     btn.pack(padx=5, pady=5)
 
     back_buttons(data_table)
 
+
+def verify_reg(column, var):
+    sat_ids = get_sat_ids()
+
+    if column == "sat_id":
+        try:
+            var = int(var)
+            if var in sat_ids:
+                return True
+            else:
+                messagebox.showerror("404 Not Found", "No sat_id found")
+        except:
+            messagebox.showinfo("Invalid Edit",f"{var} should be an Integer")
+    
+    elif column == "latitude":
+        try:
+            var = float(var)
+            return True
+        except:
+            messagebox.showinfo("Invalid Edit",f"{var} should be an Float")
+
+    elif column == "latitude":
+        try:
+            var = float(var)
+            return True
+        except:
+            messagebox.showinfo("Invalid Edit",f"{var} should be an Float")
+    
+    else:
+        return True
 
 def handle_update_reg():
     display_region_table()
@@ -397,16 +524,32 @@ def handle_update_reg():
     entry_var.pack()
         
     def edit_reg():
-        reg_id = entry_id.get()
-        column = entry_column.get()
-        var = entry_var.get()
+        reg_id = entry_id.get().strip()
+        column = entry_column.get().strip().lower()
+        var = entry_var.get().strip()
 
-        if reg_id and column and var:
-            update_region(int(reg_id), column, var)
-            messagebox.showinfo("Editing Info",f"Region of ID {reg_id} has been edited")
-            reg_table()
-        else:
-            messagebox.showinfo("Edit","Please fill the whole form")
+        try:
+            reg_id = int(reg_id)
+
+            if reg_id and column and var:
+
+                if column in ['sat_id', 'name', 'latitude', 'longitude'] and reg_id in reg_ids:
+
+                    if verify_reg(column,var):
+                        update_region(reg_id, column, var)
+                        messagebox.showinfo("Editing Info",f"Region of ID {reg_id} has been edited")
+                        reg_table()
+
+                elif reg_id not in reg_ids:
+                    messagebox.showerror("404 Not Found", "Region Id is not found!")
+                else:
+                    messagebox.showerror("404 Not Found", "Column not found!")
+
+            else:
+                messagebox.showinfo("Edit","Please fill the whole form")
+        
+        except:
+            messagebox.showerror("ValueError", "Region Id is not an Integer")
 
     btn = tk.Button(root, text="Edit", command=edit_reg)
     btn.pack(padx=5, pady=5)
@@ -421,20 +564,31 @@ def handle_update_reg():
 def del_sat():
     display_satellite_table()
 
-    user_input = tk.StringVar()
     sat_ids = get_sat_ids()
 
     label = tk.Label(root, text=f"Enter Satellite ID to delete {sat_ids}:")
-    label.pack()
-
-    entry = tk.Entry(root, textvariable=user_input)
-    entry.pack(padx=5, pady=5)
+    label.pack(padx=5, pady=5)
+    entry = tk.Entry(root)
+    entry.pack()
 
     def deleting_sat():
-        val = user_input.get()
-        delete_sat(val)
-        messagebox.showinfo("Delete Info",f"Deleted Satellite of Id: {val}")
-        sat_table()
+        val = entry.get().strip()
+
+        if val:
+            try:
+                val = int(val)
+
+                if val in sat_ids:
+                    delete_sat(val)
+                    messagebox.showinfo("Delete Info",f"Deleted Satellite of Id: {val}")
+                    sat_table()
+                else:
+                     messagebox.showerror("404 Not Found", "Satellite Id not found!")
+
+            except:
+                messagebox.showerror("ValueError", "Satellite Id is not an Integer")
+        else:
+            messagebox.showerror("Empty Value Given", "Please give a Satellite Id")
         
     btn = tk.Button(root, text="Delete", command=deleting_sat)
     btn.pack(padx=5, pady=5)
@@ -445,20 +599,31 @@ def del_sat():
 def del_data():
     display_data_table()
 
-    user_input = tk.StringVar()
     data_ids = get_data_ids()
 
     label = tk.Label(root, text=f"Enter Satellite Data ID to delete {data_ids}:")
-    label.pack()
-
-    entry = tk.Entry(root, textvariable=user_input)
-    entry.pack(padx=5, pady=5)
+    label.pack(padx=5, pady=5)
+    entry = tk.Entry(root)
+    entry.pack()
 
     def deleting_data():
-        val = user_input.get()
-        delete_data(val)
-        messagebox.showinfo("Delete Info",f"Deleted Satellite Data of Id: {val}")
-        data_table()
+        val = entry.get().strip()
+
+        if val:
+            try:
+                val = int(val)
+
+                if val in data_ids:
+                    delete_data(val)
+                    messagebox.showinfo("Delete Info",f"Deleted Satellite Data of Id: {val}")
+                    data_table()
+                else:
+                    messagebox.showerror("404 Not Found", "Satellite Data not found!")
+
+            except:
+                messagebox.showerror("ValueError", "Satellite  Data Id is not an Integer")
+        else:
+            messagebox.showerror("Empty Value Given", "Please give a Satellite Data Id")
         
     btn = tk.Button(root, text="Delete", command=deleting_data)
     btn.pack(padx=5, pady=5)
@@ -469,20 +634,30 @@ def del_data():
 def del_reg():
     display_region_table()
 
-    user_input = tk.StringVar()
     reg_ids = get_reg_ids()
 
     label = tk.Label(root, text=f"Enter Region ID to delete {reg_ids}:")
-    label.pack()
-
-    entry = tk.Entry(root, textvariable=user_input)
-    entry.pack(padx=5, pady=5)
+    label.pack(padx=5, pady=5)
+    entry = tk.Entry(root)
+    entry.pack()
 
     def deleting_reg():
-        val = user_input.get()
-        delete_region(val)
-        messagebox.showinfo("Delete Info",f"Deleted Region of Id: {val}")
-        reg_table()
+        val = entry.get().strip()
+        if val:
+            try:
+                val = int(val)
+
+                if val in reg_ids:
+                    delete_region(val)
+                    messagebox.showinfo("Delete Info",f"Deleted Region of Id: {val}")
+                    reg_table()
+                else:
+                    messagebox.showerror("404 Not Found", "Region Id not found!")
+            
+            except:
+                messagebox.showerror("ValueError", "Region Id is not an Integer")
+        else:
+            messagebox.showerror("Empty Value Given", "Please give a Region Id")
         
     btn = tk.Button(root, text="Delete", command=deleting_reg)
     btn.pack(padx=5, pady=5)
