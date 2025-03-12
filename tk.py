@@ -330,10 +330,182 @@ def create_table_var():
 
 
 
-# MARK: UPDATE TABLES
+# MARK: UPDATE TABLES VARIABLES 
+
+def handle_update_sat():
+    clear_screen()
+    
+    sats = get_sats()
+
+    tree = ttk.Treeview(root, columns=("Id", "Name", "Orbit Type", "Status", "Description"), show="headings")
+    
+    tree.heading("Id", text="Satellite Id")
+    tree.heading("Name", text="Satellite Name")
+    tree.heading("Orbit Type", text="Orbit Type")
+    tree.heading("Status", text="Status")
+    tree.heading("Description", text="Description")
+
+    for sat in sats:
+        tree.insert("", tk.END, values=(sat.id, sat.name, sat.orbit_type, sat.status, sat.description))
+
+    tree.pack(expand=True, fill="both", padx=10, pady=10)
+
+    sat_ids = get_sat_ids()
+
+    id_label = tk.Label(root, text=f"Select Satellite Id to update {sat_ids}:")
+    id_label.pack(padx=5, pady=5)
+    entry_id = tk.Entry(root)
+    entry_id.pack()
+
+    column_label = tk.Label(root, text="Enter Column Name [name, orbit_type, status, description]:")
+    column_label.pack(padx=5, pady=5)
+    entry_column = tk.Entry(root)
+    entry_column.pack()
+
+    var_label = tk.Label(root, text="Enter your Edit: ")
+    var_label.pack(padx=5, pady=5)
+    entry_var = tk.Entry(root)
+    entry_var.pack()
+        
+    def edit_sat():
+        sat_id = entry_id.get()
+        column = entry_column.get()
+        var = entry_var.get()
+
+        if sat_id and column and var:
+            update_sat(int(sat_id), column, var)
+            messagebox.showinfo("Editing Info",f"Satellite of ID {sat_id} has been edited")
+            create_table_var()
+        else:
+            messagebox.showinfo("Edit","Please fill the whole form")
+
+    btn = tk.Button(root, text="Edit", command=edit_sat)
+    btn.pack(padx=5, pady=5)
+
+    back_buttons(update_table)
+
+
+def handle_update_data():
+    clear_screen()
+    
+    data = get_data()
+
+    tree = ttk.Treeview(root, columns=("Id", "Sat Id", "Data Type", "Data Value", "Date Recorded"), show="headings")
+    
+    tree.heading("Id", text="Id")
+    tree.heading("Sat Id", text="Satellite Id")
+    tree.heading("Data Type", text="Data Type")
+    tree.heading("Data Value", text="Data Value")
+    tree.heading("Date Recorded", text="Date Recorded")
+
+    for dat in data:
+        tree.insert("", tk.END, values=(dat.id, dat.sat_id, dat.data_type, dat.data_value, dat.date_recorded))
+
+    tree.pack(expand=True, fill="both", padx=10, pady=10)
+
+    data_ids = get_data_ids()
+
+    id_label = tk.Label(root, text=f"Select Satellite Data Id to update {data_ids}:")
+    id_label.pack(padx=5, pady=5)
+    entry_id = tk.Entry(root)
+    entry_id.pack()
+
+    column_label = tk.Label(root, text="Enter Column Name [sat_id, data_type, data_value, date_recorded]:")
+    column_label.pack(padx=5, pady=5)
+    entry_column = tk.Entry(root)
+    entry_column.pack()
+
+    var_label = tk.Label(root, text="Enter your Edit: ")
+    var_label.pack(padx=5, pady=5)
+    entry_var = tk.Entry(root)
+    entry_var.pack()
+        
+    def edit_data():
+        data_id = entry_id.get()
+        column = entry_column.get()
+        var = entry_var.get()
+
+        if data_id and column and var:
+            update_data(int(data_id), column, var)
+            messagebox.showinfo("Editing Info",f"Satellite Data of Id {data_id} has been edited")
+            create_table_var()
+        else:
+            messagebox.showinfo("Edit","Please fill the whole form")
+
+    btn = tk.Button(root, text="Edit", command=edit_data)
+    btn.pack(padx=5, pady=5)
+
+    back_buttons(update_table)
+
+
+def handle_update_reg():
+    clear_screen()
+    
+    regions = get_reg()
+
+    tree = ttk.Treeview(root, columns=("Id", "Sat Id", "Name", "Latitude", "Longitude"), show="headings")
+    
+    tree.heading("Id", text="Id")
+    tree.heading("Sat Id", text="Satellite Id")
+    tree.heading("Name", text="Name")
+    tree.heading("Latitude", text="Latitude")
+    tree.heading("Longitude", text="Longitude")
+
+    for reg in regions:
+        tree.insert("", tk.END, values=(reg.id, reg.sat_id, reg.name, reg.latitude, reg.longitude))
+
+    tree.pack(expand=True, fill="both", padx=20, pady=20)
+
+    reg_ids = get_reg_ids()
+
+    id_label = tk.Label(root, text=f"Select Region Id to update {reg_ids}:")
+    id_label.pack(padx=5, pady=5)
+    entry_id = tk.Entry(root)
+    entry_id.pack()
+
+    column_label = tk.Label(root, text="Enter Column Name [sat_id, name, latitude, longitude]:")
+    column_label.pack(padx=5, pady=5)
+    entry_column = tk.Entry(root)
+    entry_column.pack()
+
+    var_label = tk.Label(root, text="Enter your Edit: ")
+    var_label.pack(padx=5, pady=5)
+    entry_var = tk.Entry(root)
+    entry_var.pack()
+        
+    def edit_reg():
+        reg_id = entry_id.get()
+        column = entry_column.get()
+        var = entry_var.get()
+
+        if reg_id and column and var:
+            update_region(int(reg_id), column, var)
+            messagebox.showinfo("Editing Info",f"Region of ID {reg_id} has been edited")
+            create_table_var()
+        else:
+            messagebox.showinfo("Edit","Please fill the whole form")
+
+    btn = tk.Button(root, text="Edit", command=edit_reg)
+    btn.pack(padx=5, pady=5)
+
+    back_buttons(update_table)
 
 def update_table():
-    messagebox.showinfo("Update", "Coming Soon")
+    clear_screen()
+
+    label = tk.Label(root, text="Choose Table to update ", font=("Arial", 14, "bold"))
+    label.pack(padx=10, pady=10)
+
+    btn1 = tk.Button(root, text="Satellite Table", command=handle_update_sat)
+    btn1.pack(pady=5)
+
+    btn2 = tk.Button(root, text="Satellite Data Table", command=handle_update_data)
+    btn2.pack(pady=5)
+
+    btn3 = tk.Button(root, text="Region Table", command=handle_update_reg)
+    btn3.pack(pady=5)
+
+    back_buttons()
 
 
 

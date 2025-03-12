@@ -150,6 +150,7 @@ def get_data_type():
     data_objs = get_data()
     return [data.data_type for data in data_objs]
 
+
 def get_data_ids():
     data_objs = get_data()
     return [data.id for data in data_objs]
