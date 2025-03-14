@@ -1,4 +1,4 @@
-# Satellite Data Management System
+# Satellite Monitoring DataBase
 
 ## Overview
 The Satellite Data Management System is a command-line application for managing satellite-related information. You can use it to store and organize satellite details, collected data, and associated regions. It allows you to create, view, update, and delete records as needed.
@@ -12,7 +12,31 @@ This system uses two one-to-many relationships:
 - SQLAlchemy (for database management)
 - Alembic (for database migrations)
 - SQLite (default database, can be configured for other databases)
+- Docker
+- Tkinter
 
+## Project Structure
+
+```
+satellite_monitoring_Db/ ├──
+│-- migrations/
+|      ├──versions/
+|      ├──env.py
+|      ├──README
+|      ├──script.py.mako
+|--mydb/
+|      ├──models.py
+|      ├──seed.py
+|--alembic.ini
+|--Dockerfile
+|--main.py
+|--monitoring.db
+|--Pipfile
+|--Pipfile.lock
+|--README.md
+|--run.py
+
+```
 ## What You Can Do
 - View satellite information
 - View collected satellite data
@@ -27,53 +51,89 @@ This system uses two one-to-many relationships:
 - Alembic
 
 ## Installation
-1. Clone the repository:
+There are two ways for installation:
+
+### 1. Clone the repo
+Fork and clone the repository [repo](https://github.com/Edmund-Kiama/Satellite-Data-Monitoring-DB):
    ```bash
-   git clone <repository-url>
-   cd satellite-data-management
+   git clone github.com/Edmund-Kiama/Satellite-Data-Monitoring-DB
+   cd Satellite-Data-Monitoring-DB
    ```
-2. Ensure Python 3.8 is installed.
-3. Install dependencies using Pipenv:
+### 2. Using Docker Images
+If you have docker, you can pull and run its image from docker hub:
+   ```bash
+   docker run -it --rm edmundkiama/sat-monitoring-db:latest
+   ```
+
+## From cloning the repo
+If you choose to clone the repo, follow the following:  
+You can either run the program in CLI or via a python GUI:
+
+### a) Using the CLI
+1. Ensure Python 3.8 is installed.
+   ```bash
+   python3 --version
+   ```
+2. Install dependencies using Pipenv:
    ```bash
    pipenv install
    ```
-4. Initialize the database:
+3. Initialize the python environment in shell:
    ```bash
-   pipenv run alembic upgrade head
+   pipenv shell
    ```
-5. Run the script:
+4. Run the main script and interact with its CLI:
    ```bash
-   pipenv run python main.py
+   python main.py
+   ```
+### B) Using python GUI
+1. Ensure Python 3.8 is installed.
+   ```bash
+   python3 --version
+   ```
+2. Install tkinter: (on Ubuntu or Debian)
+   ```bash
+   sudo apt-get install python3-tk
+   ```
+3. Install rest of the dependecies in your virtual environment:
+   ```bash
+   pipenv install
+   ```
+4. Initialize the python environment in shell:
+   ```bash
+   pipenv shell
+5. Run the run script and interact with its tkinter GUI:
+   ```bash
+   python run.py
    ```
 
 ## How to Use
-### Viewing Data
-- See all satellites: `display_satellite()`
-- See collected data: `display_data()`
-- See region details: `display_region()`
+- There are three tables in our Database:
+   - Satellite table
+   - Satellite Data table
+   - Region table    
+  
+Functionality of the program include:
 
-### Managing Satellites
-- Add a new satellite: `handle_sat_create()`
-- Update satellite details: `handle_sat_edit()`
-- Remove a satellite: `handle_sat_delete()`
+1. Viewing Table Values
+   - See all satellites 
+   - See collected data 
+   - See region details 
 
-### Managing Data
-- Add satellite data: `handle_satdata_create()`
-- Update satellite data: `handle_data_edit()`
-- Remove satellite data: `handle_data_delete()`
+2. Managing Satellites
+   - Add a new satellite
+   - Update satellite details
+   - Remove a satellite
 
-### Managing Regions
-- Add a new region: `handle_region_create()`
-- Update region details: `handle_region_edit()`
-- Remove a region: `handle_region_delete()`
+3. Managing Satellite Data
+   - Add satellite data
+   - Update satellite data
+   - Remove satellite data
 
-## Database Setup & Structure
-### Setting Up the Database
-To initialize the database, run:
-```bash
-pipenv run alembic upgrade head
-```
-This applies migrations and sets up the necessary tables.
+4. Managing Regions
+   - Add a new region
+   - Update region details
+   - Remove a region
 
 ### Database Tables
 #### Satellite Table
@@ -88,7 +148,7 @@ This applies migrations and sets up the necessary tables.
 | Id | Sat Id | Name | Latitude | Longitude |
 |----|--------|------|----------|-----------|
 
-## Error Handling
+## Error Handling features
 - Ensures correct data types for input (integer, string, float, etc.).
 - Provides prompts for valid input entries.
 - Displays warnings for invalid operations.
@@ -97,6 +157,4 @@ This applies migrations and sets up the necessary tables.
 ## License
 This project is licensed under the MIT License.
 
-## Author
-[Your Name]
 
