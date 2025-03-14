@@ -56,8 +56,8 @@ There are two ways for installation:
 ### 1. Clone the repo
 Fork and clone the repository [repo](https://github.com/Edmund-Kiama/Satellite-Data-Monitoring-DB):
    ```bash
-   git clone github.com/Edmund-Kiama/Satellite-Data-Monitoring-DB
-   cd Satellite-Data-Monitoring-DB
+   git clone git@github.com:Edmund-Kiama/Satellite-Data-Monitoring-DB.git
+   cd satellite-data-Monitoring-DB
    ```
 ### 2. Using Docker Images
 If you have docker, you can pull and run its image from docker hub:
