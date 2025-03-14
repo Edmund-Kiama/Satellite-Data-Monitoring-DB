@@ -3,6 +3,7 @@ from mydb.seed import get_sats, get_data, get_reg, get_sat_ids ,get_data_ids, ge
 from mydb.seed import delete_sat, delete_region, delete_data
 from mydb.seed import add_sat, add_region, add_data
 from mydb.seed import update_data, update_region, update_sat
+from datetime import datetime
 
 import tkinter as tk
 from tkinter import messagebox
@@ -232,7 +233,7 @@ def handle_add_data():
     entry_value = tk.Entry(root)
     entry_value.pack()
 
-    date_label = tk.Label(root, text="Date Recorded: ")
+    date_label = tk.Label(root, text="Date Recorded: [YYYY-MM-DD] ")
     date_label.pack(padx=5, pady=5)
     entry_date = tk.Entry(root)
     entry_date.pack()
@@ -241,22 +242,31 @@ def handle_add_data():
         sat_id = entry_sat_id.get().strip()
         data_type = entry_type.get().strip().capitalize()
         data_value = entry_value.get().strip()
-        date_recorded = entry_date.get().strip()
+        date_rec = entry_date.get().strip()
+        date_recorded = False
 
-        if sat_id and data_type and data_value and date_recorded:
+        if sat_id and data_type and data_value and date_rec:
             try:
-                sat_id = int(sat_id)
-                if sat_id in sat_ids:
-                    add_data(sat_id, data_type, data_value, date_recorded)
-                    messagebox.showinfo("Adding Info","New Satellite Data has been added.")
-                    data_table()
-                else:
-                    messagebox.showerror("ValueError", "Satellite Id does not exist!")
+                date_recorded = datetime.strptime(date_rec,  "%Y-%m-%d").date()
             except:
-                if not isinstance(sat_id,int):
-                    messagebox.showerror("ValueError", "Satellite Id is not an Integer")
-                else:
-                    messagebox.showerror("ValueError", "Unexpected Error")
+                messagebox.showerror("Invalid Date", "Please add a valid date: eg 2025-10-06")    
+            
+            if date_recorded:
+                try:
+                    sat_id = int(sat_id)
+                    if sat_id in sat_ids:
+                        add_data(sat_id, data_type, data_value, date_recorded)
+                        messagebox.showinfo("Adding Info","New Satellite Data has been added.")
+                        data_table()
+                    else:
+                        messagebox.showerror("ValueError", "Satellite Id does not exist!")
+                except:
+                    if not isinstance(sat_id,int):
+                        messagebox.showerror("ValueError", "Satellite Id is not an Integer")
+                    elif not date_recorded:
+                        messagebox.showerror("Invalid Date", "Please add a valid date: eg 2025-10-06") 
+                    else:
+                        messagebox.showerror("ValueError", "Unexpected Error")
         else:
             messagebox.showinfo("Info","Please fill the whole form")
 
