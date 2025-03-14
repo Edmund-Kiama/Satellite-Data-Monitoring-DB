@@ -22,6 +22,43 @@ geos = Satellite(
     status = "active",
     description = "NOAA's weather satellite"
 )
+sentinel = Satellite(
+    name="Sentinel-2",
+    orbit_type="LEO",
+    status="active",
+    description="ESA's Earth observation satellite for land monitoring"
+)
+himawari = Satellite(
+    name="Himawari-8",
+    orbit_type="GEO",
+    status="active",
+    description="Japan's weather satellite for Asia-Pacific region"
+)
+terra = Satellite(
+    name="Terra",
+    orbit_type="LEO",
+    status="active",
+    description="NASA's satellite for global climate and environmental research"
+)
+aqua = Satellite(
+    name="Aqua",
+    orbit_type="LEO",
+    status="active",
+    description="NASA's Earth observation satellite for studying water cycles"
+)
+cosmo_sky = Satellite(
+    name="COSMO-SkyMed",
+    orbit_type="LEO",
+    status="active",
+    description="Italian radar satellite for Earth observation and disaster monitoring"
+)
+insat_3d = Satellite(
+    name="INSAT-3D",
+    orbit_type="GEO",
+    status="active",
+    description="India's weather and environmental monitoring satellite"
+)
+
 
 def add_sat(sat_name, sat_orbit_type, sat_status, sat_description):
     instance = Satellite(
@@ -33,7 +70,7 @@ def add_sat(sat_name, sat_orbit_type, sat_status, sat_description):
     session.add(instance)
     session.commit()     
 
-session.add_all([landsat,geos])
+session.add_all([landsat, geos, sentinel, himawari, terra, aqua, cosmo_sky, insat_3d])
 session.commit()
 
 #region
@@ -61,6 +98,54 @@ mexico_gulf = Region(
     latitude = 25.00,
     longitude = -90.00,
 )
+great_barrier_reef = Region(
+    sat_id=3,  
+    name="Great Barrier Reef",
+    latitude=-18.2871,
+    longitude=147.6992,
+)
+himalayas = Region(
+    sat_id=3,  
+    name="Himalayas",
+    latitude=27.9881,
+    longitude=86.9250,
+)
+philippine_sea = Region(
+    sat_id=4,  
+    name="Philippine Sea",
+    latitude=15.0,
+    longitude=130.0,
+)
+antarctica = Region(
+    sat_id=5,
+    name="Antarctica",
+    latitude=-75.2500,
+    longitude=-0.0714,
+)
+greenland = Region(
+    sat_id=6,  # Aqua
+    name="Greenland Ice Sheet",
+    latitude=71.7069,
+    longitude=-42.6043,
+)
+andes_mountains = Region(
+    sat_id=7,  # COSMO-SkyMed
+    name="Andes Mountains",
+    latitude=-32.6532,
+    longitude=-70.0115,
+)
+indian_ocean = Region(
+    sat_id=8,  # INSAT-3D
+    name="Indian Ocean",
+    latitude=-10.0,
+    longitude=80.0,
+)
+hurricane_zone = Region(
+    sat_id=8,  # INSAT-3D
+    name="Hurricane Formation Zone",
+    latitude=12.5,
+    longitude=-60.0,
+)
 
 def add_region(sat_idx, reg_name, reg_latitude, reg_longitude):
     instance = Region(
@@ -72,7 +157,7 @@ def add_region(sat_idx, reg_name, reg_latitude, reg_longitude):
     session.add(instance)
     session.commit() 
 
-session.add_all([amazon, sahara, east_coast, mexico_gulf])
+session.add_all([amazon, sahara, east_coast, mexico_gulf, great_barrier_reef, himalayas, philippine_sea, antarctica, greenland, andes_mountains, indian_ocean, hurricane_zone])
 session.commit()
 
 #sat data
@@ -100,6 +185,60 @@ wind_speed = SatelliteData(
     data_value = "120 km/h",
     date_recorded = f"{date(2025, 3, 6)}",
 )
+ocean_temp = SatelliteData(
+    sat_id=3,  
+    data_type="Sea Surface Temperature",
+    data_value="28°C",
+    date_recorded=f"{date(2025, 1, 15)}",
+)
+air_quality = SatelliteData(
+    sat_id=3,  
+    data_type="Air Quality Index",
+    data_value="AQI 42 (Good)",
+    date_recorded=f"{date(2025, 2, 5)}",
+)
+hurricane_intensity = SatelliteData(
+    sat_id=4,  
+    data_type="Hurricane Intensity",
+    data_value="Category 4",
+    date_recorded=f"{date(2025, 3, 8)}",
+)
+ozone_levels = SatelliteData(
+    sat_id=5,  
+    data_type="Ozone Concentration",
+    data_value="290 DU",
+    date_recorded=f"{date(2025, 3, 10)}",
+)
+sea_level_rise = SatelliteData(
+    sat_id=6,  # Aqua
+    data_type="Sea Level Rise",
+    data_value="3.2 mm/year",
+    date_recorded=f"{date(2025, 1, 20)}",
+)
+polar_ice_extent = SatelliteData(
+    sat_id=6,  # Aqua
+    data_type="Polar Ice Extent",
+    data_value="12.5 million km²",
+    date_recorded=f"{date(2025, 2, 18)}",
+)
+earthquake_detection = SatelliteData(
+    sat_id=7,  # COSMO-SkyMed
+    data_type="Ground Displacement",
+    data_value="5.3 cm shift",
+    date_recorded=f"{date(2025, 3, 5)}",
+)
+solar_radiation = SatelliteData(
+    sat_id=8,  # INSAT-3D
+    data_type="Solar Radiation",
+    data_value="1361 W/m²",
+    date_recorded=f"{date(2025, 2, 25)}",
+)
+precipitation_rate = SatelliteData(
+    sat_id=8,  # INSAT-3D
+    data_type="Precipitation Rate",
+    data_value="15 mm/hr",
+    date_recorded=f"{date(2025, 3, 12)}",
+)
 
 def add_data(sat_idx, type_data, value_data, date):
     instance = SatelliteData(
@@ -111,7 +250,7 @@ def add_data(sat_idx, type_data, value_data, date):
     session.add(instance)
     session.commit() 
 
-session.add_all([surface_temp, vegetation_index, cloud_cover, wind_speed])
+session.add_all([surface_temp, vegetation_index, cloud_cover, wind_speed, ocean_temp, air_quality, hurricane_intensity, ozone_levels, sea_level_rise, polar_ice_extent, earthquake_detection, solar_radiation, precipitation_rate])
 session.commit()
 
 
