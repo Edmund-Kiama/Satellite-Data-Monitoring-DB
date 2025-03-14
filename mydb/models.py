@@ -49,7 +49,7 @@ class SatelliteData(Base):
     sat_id = Column(Integer, ForeignKey("satellites.id"), nullable=False)
     _data_type = Column("data_type", String, nullable=False)
     data_value = Column(String, nullable=False)
-    date_recorded = Column(String, default=date.today()) # fix : Ignore --> Date instead of String
+    date_recorded = Column(Date, default=date.today) 
    
     satellite = relationship("Satellite", back_populates="satellite_data")
 
@@ -66,10 +66,6 @@ class SatelliteData(Base):
             self._data_type = data_type
         else:
             raise ValueError(f"{data_type} is not an string")
-        
-    #fix: 
-    # def update(self, variable, new_value):
-    #     setattr(self, variable, new_value)
 
 class Region(Base):
 

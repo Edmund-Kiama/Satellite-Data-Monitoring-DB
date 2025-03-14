@@ -3,6 +3,7 @@ from mydb.seed import get_sats, get_reg, get_data, get_sat_ids, get_data_ids, ge
 from mydb.seed import delete_sat, delete_region, delete_data
 from mydb.seed import add_sat, add_region, add_data
 from mydb.seed import update_data, update_region, update_sat
+from datetime import datetime, date
 
 on_loop = True
 
@@ -13,12 +14,12 @@ def display_satellite():
     print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     print("")
     print("                             Satellite Table")
-    print("------------------------------------------------------------------------------------------")
-    print("| Id    |   Name        | Orbit Type |   Status    |   Description                       ")
-    print("------------------------------------------------------------------------------------------")
+    print("-------------------------------------------------------------------------------------------------------------------------------------")
+    print("| Id    |         Name            | Orbit Type |   Status    |   Description                       ")
+    print("-------------------------------------------------------------------------------------------------------------------------------------")
     for sat in sats:
-        print(f"| {sat.id:<3}   |   {sat.name:<10}  |   {sat.orbit_type:<5}    |   {sat.status:<8}  |   {sat.description:<20}")
-    print("------------------------------------------------------------------------------------------")
+        print(f"| {sat.id:<3}   |   {sat.name:<20}  |   {sat.orbit_type:<5}    |   {sat.status:<8}  |   {sat.description:<20}")
+    print("-------------------------------------------------------------------------------------------------------------------------------------")
     print("")
 
 def display_data():
@@ -26,12 +27,12 @@ def display_data():
     print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     print("")
     print("                             Satellite Data Table")
-    print("-------------------------------------------------------------------------------")
-    print("| Id    | Sat Id |       Data Type           |  Data Value   |  Date recorded ")
-    print("-------------------------------------------------------------------------------")
+    print("-----------------------------------------------------------------------------------------------------")
+    print("| Id    | Sat Id |             Data Type               |        Data Value       |  Date recorded ")
+    print("------------------------------------------------------------------------------------------------------")
     for dat in data:
-        print(f"| {dat.id:<3}   |   {dat.sat_id:<3}  |   {dat.data_type:<20}    |   {dat.data_value:<10}  |   {dat.date_recorded:<10}")
-    print("------------------------------------------------------------------------------")
+        print(f"| {dat.id:<3}   |   {dat.sat_id:<3}  |   {dat.data_type:<30}    |   {dat.data_value:<20}  |   {dat.date_recorded.strftime('%Y-%m-%d'):<10}")
+    print("------------------------------------------------------------------------------------------------------")
     print("")
 
 def display_region():
@@ -39,12 +40,12 @@ def display_region():
     print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     print("")
     print("                             Region Table")
-    print("------------------------------------------------------------------------")
-    print("| Id    | Sat Id |        Name               |  Latitude  |  Longitude ")
-    print("------------------------------------------------------------------------")
+    print("---------------------------------------------------------------------------------------------------")
+    print("| Id    | Sat Id |              Name                   |      Latitude      |  Longitude ")
+    print("---------------------------------------------------------------------------------------------------")
     for reg in regions:
-        print(f"| {reg.id:<3}   |   {reg.sat_id:<3}  |   {reg.name:<20}    |   {reg.latitude:<7}  |   {reg.longitude:<7}")
-    print("------------------------------------------------------------------------")
+        print(f"| {reg.id:<3}   |   {reg.sat_id:<3}  |   {reg.name:<30}    |   {reg.latitude:<15}  |   {reg.longitude:<15}")
+    print("---------------------------------------------------------------------------------------------------")
     print("")
 
 
@@ -187,15 +188,16 @@ def handle_sat_create():
 
 
 def handle_satdata_create():
+    sat_ids = get_sat_ids()
     print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     print("")
     print("Satellite Data table")
-    print("Values required are: name, orbit_type,status.description")
+    print("Values required are: sat_id, name, orbit_type,status.description")
     print("")
 
     while True:
         try:
-            sat_idx = int(input("Satellite Id that took the data recording: ").strip())
+            sat_idx = int(input(f"Satellite Id that took the data recording:{sat_ids} ").strip())
             print("")
             break
         except ValueError:
@@ -206,8 +208,17 @@ def handle_satdata_create():
     print("")
     value_data = input("Value of Data: ").strip()
     print("")
-    date = input("Date of recording Data [YYYY-MM-DD]: ").strip()
-    print("")
+
+    while True:
+        user_date = input("Date of recording Data [YYYY-MM-DD]: ").strip()
+        print("")
+        try:
+            date = datetime.strptime(user_date,  "%Y-%m-%d").date()
+            break
+        except ValueError:
+            print("Invalid Date! Please enter valid date e.g 2025-10-06.")  
+            print("")
+
 
     if sat_idx and type_data and value_data and date:
         add_data(sat_idx, type_data, value_data, date)
@@ -445,22 +456,31 @@ def handle_data_edit():
             print("")
 
     while True:
-        try:
-            if variable in ["data_type", "data_value", "date_recorded"]:
+        if variable in ["data_type", "data_value"]:
+            try:
                 new_value = input("What's the new value: ").strip()
                 print("")
                 break
-        except ValueError:
-            print(f'{new_value} is not in ["data_type", "data_value", "date_recorded"]')
-            print("")
-        try:
-            if variable == "sat_id":
-                new_value = int(input("What's the new value: ").strip())
+            except ValueError:
+                print(f'{new_value} is not in ["data_type", "data_value", "date_recorded"]')
+                print("")
+        elif variable == "sat_id":
+            try:
+                new_value = int(input("What's the new satellite id: ").strip())
                 print("")
                 break
-        except ValueError:
-            print("The value you provided is not an Integer")
-            print("")
+            except ValueError:
+                print("The value you provided is not an Integer")
+                print("")
+        else:
+            try:
+                date_value = int(input("What's the new date: ").strip())
+                print("")
+                new_value = datetime.strptime(date_value,  "%Y-%m-%d").date()
+                break
+            except ValueError:
+                print("Invalid Date! Please enter valid date e.g 2025-10-06.")  
+                print("")
 
     if data_id and variable and new_value:
         update_data(data_id, variable, new_value)
@@ -593,7 +613,7 @@ def menu():
         if user in ["1", "2", "3", "4"]:
             break;
         else:
-            print("f{user} is Invalid! Choose in (1, 2, 3, 4).")
+            print(f"{user} is Invalid! Choose in (1, 2, 3, 4).")
             print("")
 
     return user
